@@ -1,24 +1,25 @@
 //导入依赖模块
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var session = require('express-session');
-var MongoStore = require('connect-mongo')(session);
+let express = require('express');
+let path = require('path');
+let bodyParser = require('body-parser');
+let logger = require('morgan');
+let mongoose = require('mongoose');
+let session = require('express-session');
+let MongoStore = require('connect-mongo')(session);
 // 连接数据库
-var dbUrl = 'mongodb://localhost/weintern';
+let dbUrl = 'mongodb://localhost/weintern';
 mongoose.Promise = global.Promise;
 mongoose.connect(dbUrl,{useMongoClient: true});  // mongodb版本更新了
 
 //设置端口
-var port = process.env.PORT || 8100;
-var app = express();
-var index = require('./routes/movie/index');
-var admin = require('./routes/admin/admin');
-var user = require('./routes/user/user');
-var category = require('./routes/admin/categoryAdmin');
-var userCenter = require('./routes/admin/userCenter');
-var status = require('./routes/status/status');
+let port = process.env.PORT || 8100;
+let app = express();
+let index = require('./routes/movie/index');
+let admin = require('./routes/admin/admin');
+let user = require('./routes/user/user');
+let category = require('./routes/admin/categoryAdmin');
+let userCenter = require('./routes/admin/userCenter');
+let status = require('./routes/status/status');
 app.set('views', './views/pages');
 app.set('view engine', 'jade');
 app.use(bodyParser.json());
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(express.static(path.join(__dirname, 'public'))); // 设置静态目录
-var moment = require('moment');
+let moment = require('moment');
 moment.locale('zh-cn');
 app.locals.moment = moment; // 定义整个项目使用moment
 app.use(session({
@@ -46,10 +47,16 @@ app.listen(port, () => {
 	console.log('server running on port: ' + port);
 });
 
+if ('development' === app.get('env')) {
+	app.set('showStackError', true);
+	app.use(logger(':method :url :status'));
+	app.locals.pretty = true;
+	mongoose.set('debug', true);
+}
 
 app.use((req, res, next) => {
 	// console.log("user in session:"+req.session.user)
-	var _user = req.session.user;
+	let _user = req.session.user;
 	if(_user){
 		res.locals.user = _user;
 	}
@@ -60,7 +67,7 @@ app.use((err, req, res, next) => {
 	err = new Error('Not Found');
 	err.status = 404;
 	next(err);
-})
+});
 
 
 // index route
