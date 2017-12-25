@@ -1,0 +1,24 @@
+doctype
+html
+    head
+        meta(charset="utf-8")
+        meta(content="IE=edge",http-equiv="X-UA-Compatible")
+        meta(name="viewport",content="width=device-width, initial-scale=1")
+        title #{title}
+        include ../includes/head.jade
+body
+    .container(style="background:#fff;")
+        form(method="POST",action="/user/signUp")
+            .row(style="padding-top:15px;font-size:18px;")
+                .col-md-12 注册
+            hr(style="margin:15px 0;border-color:#d9d9d9")
+            .form-group
+                label(for="signupName") 账户：
+                input#signupName.form-control(type="text", placeholder="请输入您的邮箱或姓名", name="user[name]")
+            .form-group
+                label(for="signupPassword") 密码：
+                input#signupPassword.form-control(type="password", placeholder="请输入您的密码", name="user[password]")
+            .form-group.text-center
+                a(href="/")
+                    button.btn.btn-default(type="button",data-dismiss="modal") 取消
+                button.btn.btn-success(type="submit",style="margin-left:10px;") 提交

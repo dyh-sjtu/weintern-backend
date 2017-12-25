@@ -1,0 +1,5 @@
+/*/node_modules
+/public/libs
+node_modules
+.idea
+public/uploads/*

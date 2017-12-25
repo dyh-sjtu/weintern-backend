@@ -1,0 +1,86 @@
+.container
+	.row
+		.col-md-4
+			h3(style="margin-top:15px;") #{title}
+		if title=="首页"
+			.col-md-4
+				form#form-search(action="/search",method="post",onSubmit="return false")
+					.input-group(style="padding-top:10px")
+						input.form-control(type="text",onkeydown="onKeyDown(this)",name="query",placeholder="输入关键字并回车！")
+						span.input-group-addon
+							i.glyphicon.glyphicon-search
+		.col-md-4.pull-right
+			if user
+				h5.text-right(style="display:flex;align-items:center")
+					span(style="white-space:nowrap") 欢迎您，
+					a(href="/user/center?userId=#{user._id}",style="color:#337ab7;font-style:normal;margin-right:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;") &nbsp;#{user.name}
+					span.dropdown(style="display: inline-block;")
+						button.btn.btn-primary.dropdown-toggle(id="dLable",type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false") 后台管理
+							span.caret
+						ul(class="dropdown-menu",aria-labelledby="dLable")
+							li
+								a(href="/admin/movie/list") 电影列表
+							li
+								a(href="/admin/movie/add") 电影录入
+							li
+								a(href="/admin/category/list") 电影分类
+							li
+								a(href="/admin/category/new") 新增分类
+							li
+								a(href="/admin/user/list") 用户列表
+							li
+								a(href="/") 返回首页
+					a.btn.btn-danger(href="/loginout",style="display:inline; margin-left:10px;") 注销
+			else
+				h5.text-right(style="margin-top: 10px")
+				a(href="/",class="btn btn-primary pull-right",style="margin:0 0 10px 10px",data-toggle="modal",data-target="#signin-modal") 登录
+				a(href="/",class="btn btn-success pull-right",data-toggle="modal",data-target="#signup-modal") 注册
+	hr(style="margin:10px 0;margin-top:0;border-color:#d9d9d9")
+#signin-modal.modal.fade
+	.modal-dialog
+		.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+			form(method="POST",action="/user/signIn")
+				.modal-header
+					h4.modal-title 登录
+				.modal-body
+					.form-group
+						label(for="signinName") 账户：
+						input#signinName.form-control(type="text", placeholder="请输入您的邮箱或者姓名",name="user[name]")
+					.form-group
+						label(for="signPassword") 密码：
+						input#signPassword.form-control(type="password", placeholder="请输入密码",name="user[password]")
+				.modal-footer
+					button.btn.btn-default(type="button",data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交
+
+#signup-modal.modal.fade
+	.modal-dialog
+		.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+			form(method="POST",action="/user/signUp")
+				.modal-header
+					h4.modal-title 注册
+				.modal-body
+					.form-group
+						label(for="signupName") 账户：
+						input#signupName.form-control(type="text", placeholder="请输入您的邮箱或姓名",name="user[name]")
+					.form-group
+						label(for="signupPassword") 密码：
+						input#signupPassword.form-control(type="password", placeholder="请输入您的密码",name="user[password]")
+				.modal-footer
+					button.btn.btn-default(type="button",data-dismiss="modal") 取消
+					button.btn.btn-success(type="submit") 提交
+	script.
+		function onKeyDown(ele){
+			var e = event || window.event  
+			var $val = $(ele).val();			
+			if(e && e.keyCode==13){ // enter 键
+				console.info($val)
+				if($val==""||$val==null){
+					return false
+				}else{
+					console.log($val);
+					$("#form-search").attr('onSubmit','return true');
+				}
+				return false
+			}
+		}

@@ -1,0 +1,30 @@
+{
+  "apps": [
+    {
+      "name": "weintern",
+      "script": "app.js",
+      "watch":true,
+      "env": {
+        "COMMON_VARIABLE": "true"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }
+  ],
+  "deploy": {
+    "production": {
+      "user": "dyhgj",
+      "host": ["47.96.128.122"],
+      "port": "1026",
+      "ref": "origin/master",
+      "repo": "https://github.com/dyh-sjtu/weintern-backend",
+      "path": "/www/website/production",
+      "ssh_options": "StrictHostKeyChecking=no",
+      "post-deploy": "npm install && pm2 startOrRestart ecosystem.json --env production",
+      "env": {
+        "NODE_ENV": "production"
+      }
+    }
+  }
+}
