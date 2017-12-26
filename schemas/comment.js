@@ -1,6 +1,6 @@
-var mongoose = require('mongoose');
-var ObjectId = mongoose.Schema.Types.ObjectId;
-var CommentSchema = new mongoose.Schema({
+let mongoose = require('mongoose');
+let ObjectId = mongoose.Schema.Types.ObjectId;
+let CommentSchema = new mongoose.Schema({
 	job: {
 		type: ObjectId,
 		ref: 'Job'

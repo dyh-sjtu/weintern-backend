@@ -1,6 +1,10 @@
 let express = require('express');
 let router = express.Router();
 let User = require('../../models/user');
+// 权限中间件
+let {requiredLogin, requiredAdmin} = require('../middleware/auth');
+
+router.use(requiredLogin);
 
 // 用户列表
 router.get('/weintern/user/list', requiredAdmin, (req, res) => {
@@ -33,3 +37,5 @@ router.delete('/weintern/user/list', requiredAdmin, (req, res) => {
 		})
 	}
 })
+
+module.exports = router;

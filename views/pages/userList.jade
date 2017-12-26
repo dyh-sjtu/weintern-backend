@@ -23,5 +23,5 @@ block content
 								td(style="vertical-align: middle;") #{item.img}
 								td(style="vertical-align: middle;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center")
-									button.btn.btn-danger.del-user(type="button",data-id="#{item._id}",style="margin:0 5px;",onclick="del(this,'/job/user/list')") 删除
-	script(src="/js/job.js")
+									button.btn.btn-danger.del-user(type="button",data-id="#{item._id}",style="margin:0 5px;",onclick="del(this,'/weintern/user/list')") 删除
+	script(src="/js/admin.js")

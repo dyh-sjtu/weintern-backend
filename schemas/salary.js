@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let SalarySchema = new mongoose.Schema({
-	value: Number,
+	value: String,
 	jobs: [{type: ObjectId, ref: 'Job'}],
 	meta: {
 		createAt: {

@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-let Movie = require('../../models/job');
+let Job = require('../../models/job');
 let Category = require('../../models/category');
 
 // 权限中间件
