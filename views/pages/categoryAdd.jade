@@ -3,7 +3,7 @@ block content
 	.container
 		.row
 			.col-md-12
-				form.form-horizontal(method="post",action="/admin/category")
+				form.form-horizontal(method="post",action="/job/category")
 					if category._id
 						input(type="hidden", name="category[_id]", value="#{category._id}")
 					.form-group

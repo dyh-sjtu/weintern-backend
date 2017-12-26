@@ -8,15 +8,15 @@ block content
 						.panel-heading.clearfix(style="position:relative")
 							h3 #{cat.name}
 							if cat.movies && cat.movies.length >= 4
-								a(href="/movie/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
+								a(href="/index/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
 						.panel-body
 							if cat.movies && cat.movies.length > 0
 								.row
 									each item in cat.movies 
 										.col-md-3
 											.thumbnail
-												a(href="/movie/"+item._id)
+												a(href="/index/"+item._id)
 													img(src=item.poster,alt="#{item.title}",style="height:350px;")
 												.caption
 													h5=item.title
-													a.btn.btn-primary(href="movie/#{item._id}",role="button") 观看预告片
+													a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片

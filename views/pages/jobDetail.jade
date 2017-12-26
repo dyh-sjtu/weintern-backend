@@ -44,14 +44,14 @@ block content
 									hr
 				hr
 		.row
-			form(id="form-comment",method="POST",action="/admin/user/comment")
+			form(id="form-comment",method="POST",action="/job/user/comment")
 				.col-md-1
 					img(src="/images/headpic.png", style="width:64px;height:64px;border-radius:50%")
 				.col-md-11
 					textarea.form-control(cols="3",name="comment[content]",style="height:70px;",placeholder="说点什么吧！")
 				if user
 					.form-group.pull-right(style="margin:15px;")
-						input(type="hidden",name="comment[movie]",value="#{movie._id}")
+						input(type="hidden",name="comment[index]",value="#{movie._id}")
 						input(type="hidden",name="comment[from]",value="#{user._id}")
 						button#comment-btn.btn.btn-primary(type="submit") 发表评论
 				else

@@ -28,8 +28,8 @@ block content
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center;") #{item.category.name}
 								td(style="vertical-align: middle;text-align:center;") #{item.pv}
-								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/movie/#{item._id}") 查看
-								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/admin/movie/update/#{item._id}") 修改
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/index/#{item._id}") 查看
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/job/index/update/#{item._id}") 修改
 								td(style="vertical-align: middle;text-align:center;") 
-									button.btn.btn-danger.del(type="button",data-id="#{item._id}",onclick="del(this,'/admin/movie/list')") 删除
-	script(src="/js/admin.js")
+									button.btn.btn-danger.del(type="button",data-id="#{item._id}",onclick="del(this,'/job/index/list')") 删除
+	script(src="/js/job.js")
