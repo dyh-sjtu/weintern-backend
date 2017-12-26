@@ -16,11 +16,11 @@ block content
                                 each item,index in movies 
                                     .col-md-3
                                         .thumbnail
-                                            a(href="/movie/"+item._id)
+                                            a(href="/index/"+item._id)
                                                 img(src=item.poster,alt="#{item.title}",style="height:350px;")
                                             .caption
                                                 h5=item.title
-                                                a.btn.btn-primary(href="movie/#{item._id}",role="button") 观看预告片
+                                                a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
                         if categories
                             .row
                                 each cat in categories
@@ -28,11 +28,11 @@ block content
                                     each item in cat.movies
                                         .col-md-3
                                             .thumbnail
-                                                a(href="/movie/"+item._id)
+                                                a(href="/index/"+item._id)
                                                     img(src=item.poster,alt="#{item.title}",style="height:350px;")
                                                 .caption
                                                     h5=item.title
-                                                    a.btn.btn-primary(href="movie/#{item._id}",role="button") 观看预告片
+                                                    a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
                                 //- if number > 8 
                                 //-         nav(style="text-align: center")
                                 //-             ul.pagination.pagination-lg(style="margin:10px 0")

@@ -1,7 +1,7 @@
 let mongoose = require('mongoose');
 let ObjectId = mongoose.Schema.Types.ObjectId;
-let CategorySchema = new mongoose.Schema({
-	name: String,
+let WorksiteSchema = new mongoose.Schema({
+	addr: String,
 	jobs: [{type: ObjectId, ref: 'Job'}],
 	meta: {
 		createAt: {
@@ -15,7 +15,7 @@ let CategorySchema = new mongoose.Schema({
 	}
 })
 // 为模式添加新的方法
-CategorySchema.pre('save', function (next) {
+WorksiteSchema.pre('save', function (next) {
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now();
 	} else {
@@ -23,7 +23,7 @@ CategorySchema.pre('save', function (next) {
 	}
 	next()
 })
-CategorySchema.statics = {
+WorksiteSchema.statics = {
 	fetch: function (cb) {
 		return this
 			.find({})
@@ -36,4 +36,4 @@ CategorySchema.statics = {
 			.exec(cb)
 	}
 }
-module.exports = CategorySchema;
+module.exports = WorksiteSchema;

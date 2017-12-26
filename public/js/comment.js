@@ -2,7 +2,7 @@ $(function() {
 	moment().locale('zh_cn');
 	// $("#comment-btn").click(function() {
 	// 	$.ajax({
-	// 		url: '/admin/user/comment',
+	// 		url: '/job/user/comment',
 	// 		type: 'POST',
 	// 		dataType: 'json',
 	// 		async: true,
