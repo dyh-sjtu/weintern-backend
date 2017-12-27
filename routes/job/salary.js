@@ -42,7 +42,7 @@ router.post('/weintern/job/salary/save', requiredAdmin, (req, res) => {
 });
 
 // 薪资类别列表页
-router.get('/weintern/job/category/list', requiredAdmin, (req, res) => {
+router.get('/weintern/job/salary/list', requiredAdmin, (req, res) => {
 	Salary.fetch((err, salaries) => {
 		if (err) {
 			console.log(err)
