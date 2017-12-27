@@ -21,7 +21,7 @@ let index = require('./routes/index/index');
 
 // 实习岗位相关
 // 实习岗位管理
-let jobManage = require('./routes/job/jobManage');
+let jobManage = require('./routes/job/job');
 // 实习薪水管理
 let salaryManage = require('./routes/job/salary');
 // 实习地点管理

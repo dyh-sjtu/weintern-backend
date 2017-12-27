@@ -2,7 +2,10 @@ let mongoose = require('mongoose');
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let JobSchema = new mongoose.Schema({
 	jobname: String,  // 实习标题
-	desc: String,  // 实习公司描述
+	desc: {   // 实习公司描述 || 职位诱惑
+		type: String,
+		default: ''
+	},
 	jobcontent: {  // 工作内容
 		type: Array,
 		default:[]
@@ -19,8 +22,26 @@ let JobSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'worksite'
 	},
-	resumeAddr: String,  // 邮箱投递地址
-	note: String,  // 备注
+	internWeek: {  // 实习时长，一周几天
+		type: Number,
+		default: 3
+	},
+	interMonth: {  // 实习时长，持续月份
+		type: Number,
+		default: 3
+	},
+	education: {  // 学历要求
+		type: String,
+		default:'本科'
+	},
+	resumeAddr: {  // 邮箱投递地址
+		type: String,
+		default:''
+	},
+	note: {  // 备注
+		type: String,
+		default: ''
+	},
 	pv: {  // 网站访问统计量
 		type: Number,
 		default: 0

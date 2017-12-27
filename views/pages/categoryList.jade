@@ -7,8 +7,8 @@ block content
 					thead
 						tr
 							th(style="text-align:center;width:60px;") 序号
-							th 电影类别
-							th(style="text-align:center;") 合计（部）
+							th 岗位类别
+							th(style="text-align:center;") 合计
 							th(style="text-align:center;") 录入时间 
 							th(style="text-align:center;") 查看
 							th(style="text-align:center;") 更新 
@@ -16,13 +16,13 @@ block content
 					tbody
 						each item,index in categories
 							tr(class="item-id-#{item._id}")
-								td(style="vertical-align: middle;text-align:center;") #{index+1}
+								td(style="vertical-align: middle;text-align:center;") #{index + 1}
 								td(style="vertical-align: middle;") #{item.name}
-								td(style="vertical-align: middle;text-align:center;") #{item.movies.length}
+								td(style="vertical-align: middle;text-align:center;") #{item.jobs.length}
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
-								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/index/category/result?cat=#{item._id}&pageSize=1") 查看
-								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="../category/update/#{item._id}") 修改
-								td(style="vertical-align: middle;text-align:center;") 
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/result?cat=#{item._id}&pageSize=1") 查看
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/update/#{item._id}") 修改
+								td(style="vertical-align: middle;text-align:center;")
 									button.btn.btn-danger.del(type="button",data-id="#{item._id}",data-toggle="modal") 删除
 	#del-modal.modal.fade
 		.modal-dialog
@@ -37,17 +37,17 @@ block content
 	script.
 		var categoryId = null;
 		var tr = null;
-		$(".del").click(function(){
-			$("#del-modal").modal();  
+		$(".del").click(function () {
+			$("#del-modal").modal();
 			categoryId = $(this).data("id");
 			tr = $(this).parents("tr");
-		})							
-		$(".btn-success").click(function(){			
-			if(categoryId){
+		})
+		$(".btn-success").click(function () {
+			if (categoryId) {
 				$.ajax({
 					type: 'DELETE',
-					url: '/job/category/del' + "?id=" + categoryId,
-				}).done(function(res) {
+					url: '/weintern/job/category/del' + "?id=" + categoryId
+				}).done(function (res) {
 					if (res.success == 1) {
 						if (tr.length > 0) {
 							tr.remove();
