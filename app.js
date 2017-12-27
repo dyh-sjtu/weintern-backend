@@ -6,6 +6,7 @@ let logger = require('morgan');
 let mongoose = require('mongoose');
 let session = require('express-session');
 let MongoStore = require('connect-mongo')(session);
+let multipart = require('connect-multiparty');
 
 // 连接数据库
 let dbUrl = 'mongodb://localhost/weintern';
@@ -22,8 +23,6 @@ let index = require('./routes/index/index');
 // 实习岗位相关
 // 实习岗位管理
 let jobManage = require('./routes/job/job');
-// 实习薪水管理
-let salaryManage = require('./routes/job/salary');
 // 实习地点管理
 let worksiteManage = require('./routes/job/worksite');
 // 实习行业类别管理
@@ -48,6 +47,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true
 }));
+
+// 用于解析文件上传的中间件
+app.use(multipart());
 
 // 用于放置静态目录的中间件
 app.use(express.static(path.join(__dirname, 'public')));
@@ -114,8 +116,6 @@ app.use('/', userList);
 // 实习岗位相关路由
 // 实习岗位管理
 app.use('/', jobManage);
-// 实习薪水管理
-app.use('/', salaryManage);
 // 实习地点管理
 app.use('/', worksiteManage);
 // 实习类别管理

@@ -3,7 +3,6 @@ let router = express.Router();
 let Job = require('../../models/job');
 let Comment = require('../../models/comment');
 let Category = require('../../models/category');
-let Salary = require('../../models/salary');
 let Worksite = require('../../models/worksite');
 
 // 首页
@@ -24,7 +23,7 @@ router.get('/', (req, res) => {
 });
 
 // 岗位详情
-router.get('/weintern/job/:id', (req, res) => {
+router.get('/weintern/job/detail/:id', (req, res) => {
 	let id = req.params.id;
 	Job.update({_id: id}, {'$inc': {'pv': 1}}, (err) => {
 		if (err) console.log(err);
@@ -36,7 +35,7 @@ router.get('/weintern/job/:id', (req, res) => {
 			.exec((err, comments) => {
 				console.log("comments", comments)
 				res.render('jobDetail', {
-					title: '详情页 > ' + job.jobname,
+					title: '详情页 ',
 					job: job,
 					comments: comments
 				});

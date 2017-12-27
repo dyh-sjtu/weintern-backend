@@ -3,64 +3,70 @@ let router = express.Router();
 let Job = require('../../models/job');
 let Comment = require('../../models/comment');
 let Category = require('../../models/category');
-let Salary = require('../../models/salary');
 let Worksite = require('../../models/worksite');
-
+let SaveFile = require('../middleware/upload');
 // 权限中间件
-let {requiredLogin, requiredAdmin} = require('../middleware/auth');
+let Auth = require('../middleware/auth');
 // 没有挂载路径的中间件，应用的每个请求都会执行该中间件
-router.use(requiredLogin);
+router.use(Auth.requiredLogin);
 
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
 // 获得实习岗位列表
-router.get('/weintern/job/list', requiredAdmin, (req, res) => {
+router.get('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
 	// console.log(res.locals.job)
-	Job.find({},(err, jobs) => {
-			if (err) {
-				console.log(err)
-			} else {
-				res.render('jobList', {
-					title: '实习岗位列表',
-					jobs: jobs
-				})
-			}
-		})
+	Job.find({}, (err, jobs) => {
+		if (err) {
+			console.log(err)
+		} else {
+			res.render('jobList', {
+				title: '实习岗位列表',
+				jobs: jobs
+			})
+		}
+	})
 });
 
 // 实习岗位录入页
-router.get('/weintern/job/add', requiredAdmin, (req, res) => {
+router.get('/weintern/job/add', Auth.requiredAdmin, (req, res) => {
 	Category.find({}, (err, categories) => {
-		Salary.find({}, (err, salaries) => {
-			Worksite.find({}, (err, worksites) => {
-				res.render('jobAdd', {
-					title: '实习录入页',
-					categories: categories,
-					salaries: salaries,
-					worksites: worksites,
-					job: {
-						jobname: '',
-						desc: '',
-						jobcontent: [],
-						skill: [],
-						resumeAddr: '',
-						note: ''
-					}
-				})
+		Worksite.find({}, (err, worksites) => {
+			res.render('jobAdd', {
+				title: '实习岗位录入页',
+				categories: categories,
+				worksites: worksites,
+				job: {
+					jobname: '',
+					company: '',
+					desc: '',
+					jobcontent: [],
+					skill: [],
+					internWeek: '3-5', // 默认为3-5天每周
+					interMonth: '6',   // 默认为6个月
+					note: '',
+					education: '本科',
+					email: '',
+					canBeRegular: false,
+					welfare: '',
+					deadline: parseInt(Date.now()) + 30 * 24 * 60 * 60 * 1000 // 默认截止时间为当前时间的一个月之后
+				}
 			})
-		});
+		})
 	})
 });
 
 // 更新实习岗位
-router.get('/weintern/job/update/:id', requiredAdmin, (req, res) => {
+router.get('/weintern/job/update/:id', Auth.requiredAdmin, (req, res) => {
 	let id = req.params.id;
 	if (id) {
 		Job.findById(id, (err, job) => {
 			Category.find({}, (err, categories) => {
-				res.render('movieAdmin', {
-					title: '更新页 >' + job.jobname,
-					job: job,
-					categories: categories
+				Worksite.find({}, (err, worksites) => {
+					res.render('jobAdd', {
+						title: '岗位更新页 >' + job.jobname,
+						job: job,
+						categories: categories,
+						worksites: worksites
+					})
 				})
 			})
 		})
@@ -68,10 +74,15 @@ router.get('/weintern/job/update/:id', requiredAdmin, (req, res) => {
 })
 
 // 保存实习岗位
-router.post('/weintern/job/new', requiredAdmin, (req, res) => {
+router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, res) => {
 	let id = req.body.job._id;
 	let jobObj = req.body.job;
 	let _job;
+	
+	if (req.image) {
+		jobObj.image = req.image;
+	}
+	
 	if (id) {
 		// console.log("更新");
 		Job.findById(id, (err, job) => {
@@ -119,44 +130,31 @@ router.post('/weintern/job/new', requiredAdmin, (req, res) => {
 	} else {
 		_job = new Job(jobObj);
 		let categoryId = jobObj.category;
-		let categoryName = jobObj.categoryName;
-		if (categoryId || categoryName) {
+		if (categoryId) {
 			_job.save((err, job) => {
 				if (err) {
 					console.log(err)
 				}
-				if (categoryId) {
-					Category.findById(categoryId, (err, category) => {
-						category.jobs.push(_job.id);
-						category.save((err, category) => {
-							if (err) {
-								console.log(err)
-							}
-							res.redirect('/weintern/job/' + movie._id)
-						})
-					})
-				} else if (categoryName) {
-					let category = new Category({
-						name: categoryName,
-						jobs: [movie._id]
-					});
+				Category.findById(categoryId, (err, category) => {
+					category.jobs.push(_job.id);
 					category.save((err, category) => {
-						job.category = category._id;
-						job.save((err, job) => {
-							res.redirect('/weintern/job/' + job._id);
-						})
+						if (err) {
+							console.log(err)
+						}
+						res.redirect('/weintern/job/' + movie._id)
 					})
-				}
+				})
 			})
-		} else {
-			let msg = "请选择电影分类！";
+		}
+		else {
+			let msg = "请选择岗位分类！";
 			res.redirect(`/weintern/status?return_url=/weintern/job/add&code=0&tips=${msg}`);
 		}
 	}
 });
 
 // 删除实习岗位
-router.delete('/weintern/job/list', requiredAdmin, (req, res) => {
+router.delete('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		Category.findOne({"jobs": id}, (err, category) => {

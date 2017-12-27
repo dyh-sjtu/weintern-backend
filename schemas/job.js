@@ -1,19 +1,15 @@
 let mongoose = require('mongoose');
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let JobSchema = new mongoose.Schema({
-	jobname: String,  // 实习标题
-	desc: {   // 实习公司描述 || 职位诱惑
+	jobname: String,   // 实习标题,
+	company:String,
+	image: {  // 企业的log，如果没有，则使用默认的图标
 		type: String,
-		default: ''
+		default: 'weintern.png'
 	},
-	jobcontent: {  // 工作内容
-		type: Array,
-		default:[]
-	},
-	skill: {  // 技能要求
-		type: Array,
-		default:[]
-	},
+	desc: String,   // 实习公司描述 || 职位诱惑
+	jobcontent: Array,  // 工作内容
+	skill: Array,  // 技能要求
 	salary: {  // 薪资水平
 		type: ObjectId,
 		ref: 'salary'
@@ -22,22 +18,10 @@ let JobSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'worksite'
 	},
-	internWeek: {  // 实习时长，一周几天
-		type: Number,
-		default: 3
-	},
-	interMonth: {  // 实习时长，持续月份
-		type: Number,
-		default: 3
-	},
-	education: {  // 学历要求
-		type: String,
-		default:'本科'
-	},
-	resumeAddr: {  // 邮箱投递地址
-		type: String,
-		default:''
-	},
+	internWeek:String,  // 实习时长，一周几天
+	interMonth: String,  // 实习时长，持续月份
+	education: String,  // 学历要求
+	email: String,   // 邮箱投递地址
 	note: {  // 备注
 		type: String,
 		default: ''
@@ -50,6 +34,12 @@ let JobSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Category'
 	},
+	deadline: {  // 默认截至时期为当前录入时间往后推一个月
+		type: Date,
+		default: Date.now() + 30*24*60*60*1000
+	},
+	canBeRegular: Boolean, // 是否可转正
+	welfare: String,  // 职位福利
 	meta: {
 		createAt: {
 			type: Date,
