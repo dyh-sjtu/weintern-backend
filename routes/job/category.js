@@ -10,7 +10,7 @@ router.use(requiredLogin);
 
 // 行业类别录入页
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
-router.get('/weintern/job/category/new', requiredAdmin, (req, res) => {
+router.get('/weintern/job/category/add', requiredAdmin, (req, res) => {
 	res.render('categoryAdd', {
 		title: '电影分类录入页',
 		category: {},
