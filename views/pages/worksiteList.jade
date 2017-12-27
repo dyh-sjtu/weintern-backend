@@ -35,18 +35,18 @@ block content
 					button.btn.btn-default(type="button",data-dismiss="modal") 取消
 					button.btn.btn-success(type="button") 确定
 	script.
-		var categoryId = null;
+		var worksiteId = null;
 		var tr = null;
 		$(".del").click(function () {
 			$("#del-modal").modal();
-			categoryId = $(this).data("id");
+			worksiteId = $(this).data("id");
 			tr = $(this).parents("tr");
 		})
 		$(".btn-success").click(function () {
 			if (categoryId) {
 				$.ajax({
 					type: 'DELETE',
-					url: '/weintern/job/worksite/del' + "?id=" + categoryId
+					url: '/weintern/job/worksite/del' + "?id=" + worksiteId
 				}).done(function (res) {
 					if (res.success == 1) {
 						if (tr.length > 0) {

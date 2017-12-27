@@ -3,17 +3,15 @@ let ObjectId = mongoose.Schema.Types.ObjectId;
 let JobSchema = new mongoose.Schema({
 	jobname: String,   // 实习标题,
 	company:String,
+	companyUrl: String,
 	image: {  // 企业的log，如果没有，则使用默认的图标
 		type: String,
 		default: 'weintern.png'
 	},
 	desc: String,   // 实习公司描述 || 职位诱惑
-	jobcontent: Array,  // 工作内容
-	skill: Array,  // 技能要求
-	salary: {  // 薪资水平
-		type: ObjectId,
-		ref: 'salary'
-	},
+	jobcontent: String,  // 工作内容
+	skill: String,  // 技能要求
+	salary: String,  // 薪资水平
 	worksite: {  // 实习地点
 		type: ObjectId,
 		ref: 'worksite'
@@ -22,10 +20,7 @@ let JobSchema = new mongoose.Schema({
 	interMonth: String,  // 实习时长，持续月份
 	education: String,  // 学历要求
 	email: String,   // 邮箱投递地址
-	note: {  // 备注
-		type: String,
-		default: ''
-	},
+	note: String,  // 岗位备注
 	pv: {  // 网站访问统计量
 		type: Number,
 		default: 0
