@@ -29,17 +29,23 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 		if (err) console.log(err);
 	});
 	Job.findById(id, (err, job) => {
-		Comment.find({job: id})
-			.populate("from", "name img")
-			.populate("reply.from reply.to", "name img")
-			.exec((err, comments) => {
-				console.log("comments", comments)
-				res.render('jobDetail', {
-					title: '详情页 ',
-					job: job,
-					comments: comments
-				});
+		Category.findById(job.category, (err, category) => {
+			Worksite.findById(job.worksite, (err, worksite) => {
+				Comment.find({job: id})
+					.populate("from", "name img")
+					.populate("reply.from reply.to", "name img")
+					.exec((err, comments) => {
+						console.log("comments", comments)
+						res.render('jobDetail', {
+							title: '岗位详情页 ',
+							job: job,
+							category: category,
+							worksite: worksite,
+							comments: comments
+						});
+					})
 			})
+		});
 	})
 });
 

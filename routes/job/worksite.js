@@ -75,7 +75,7 @@ router.get('/weintern/job/worksite/update/:id', Auth.requiredAdmin, (req, res) =
 router.delete('/weintern/job/worksite/del', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
-		Job.find({worksite: id}, (err, jobs) => {
+		Job.find({worksite: id}, (err, jobs) => {  // 当删除某个工作地点类别时，应该删除该地点下的所有岗位
 			console.log(jobs);
 			jobs.forEach((ele, index) => {
 				ele.remove();

@@ -5,6 +5,10 @@ block content
 		.row
 			form.form-horizontal(method="post",action="/weintern/job/save", enctype="multipart/form-data")
 				.form-group
+					label.col-sm-2.control-label(for="inputCompanyUrl") 招聘公司主页地址
+					.col-sm-10
+						input#inputCompanyUrl.form-control(type="url",placeholder="请输入公司主页",name="job[companyUrl]", value='#{job.companyUrl}')
+				.form-group
 					label.col-sm-2.control-label(for="inputCompany") 招聘公司
 					.col-sm-10
 						input#inputCompany.form-control(type="text",placeholder="请输入公司名称",name="job[company]", value='#{job.company}')
@@ -25,9 +29,27 @@ block content
 									input(type="radio", name="job[category]", value=cat._id)
 								| #{cat.name}
 				.form-group
+					label.col-sm-2.control-label 岗位分类选择
+					.col-sm-10
+						each worksite in worksites
+							label.radio-inline
+								if job.worksite
+									input(type="radio", name="job[worksite]", value=worksite._id, checked=worksite._id.toString() == job.worksite.toString())
+								else
+									input(type="radio", name="job[worksite]", value=worksite._id)
+								| #{worksite.addr}
+				.form-group
 					label.col-sm-2.control-label(for="inputDesc") 岗位简述
 					.col-sm-10
 						input#inputDesc.form-control(type="text",name="job[desc]",placeholder="请描述实习岗位及公司的简介", value="#{job.desc}")
+				.form-group
+					label.col-sm-2.control-label(for="inputJobcontent") 岗位职责
+					.col-sm-10
+						textarea#inputJobcontent.form-control(cols="5", name="job[jobcontent]", placeholder="请填入岗位工作内容，以分号隔开，形式为1.**;2.**;3.**;") #{job.jobcontent}
+				.form-group
+					label.col-sm-2.control-label(for="inputSkill") 岗位技能要求
+					.col-sm-10
+						textarea#inputSkill.form-control(cols="5", name="job[skill]", placeholder="请填入岗位技能要求，以分号隔开，形式为1.**;2.**;3.**;") #{job.skill}
 				.form-group
 					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
@@ -47,6 +69,10 @@ block content
 						label.radio-inline
 							input(type="radio", value="否", name="job[canBeRegular]", checked=!job.canBeRegular)
 							| 否
+				.form-group
+					label.col-sm-2.control-label(for="inputSalary") 实习薪资
+					.col-sm-10
+						input#inputSalary.form-control(type="text", placeholder="请填写该岗位的实习工资", name="job[salary]", value="#{job.salary}")
 				.form-group
 					label.col-sm-2.control-label(for="inputWelfare") 职位诱惑
 					.col-sm-10

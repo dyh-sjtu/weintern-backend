@@ -37,9 +37,11 @@ router.get('/weintern/job/add', Auth.requiredAdmin, (req, res) => {
 				job: {
 					jobname: '',
 					company: '',
+					companyUrl: '',
+					salary: '',
 					desc: '',
-					jobcontent: [],
-					skill: [],
+					jobcontent: '',
+					skill: '',
 					internWeek: '3-5', // 默认为3-5天每周
 					interMonth: '6',   // 默认为6个月
 					note: '',
@@ -94,7 +96,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 				if (err) {
 					console.log(err)
 				}
-				// 添加
+				// 更新行业类别下的岗位
 				Category.findById(job.category, (err, category) => {
 					if (category.jobs.indexOf(job._id) > -1) {
 						return
@@ -106,9 +108,10 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 							console.log(err);
 						}
 					});
-					// 删除
+					// 删除当前行业类别下的岗位
 					Category.findOne({"jobs": job._id}, (err, category) => {
-						if (category.jobs.length > 0) {
+						console.log(category);
+						if (category.jobs && category.jobs.length > 0) {
 							category.jobs.forEach((e, i) => {
 								if (e.toString() === job._id.toString()) {
 									category.jobs.splice(i, 1)
@@ -124,24 +127,55 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 						}
 					})
 				});
+				// 更新行业类别下的岗位
+				Worksite.findById(job.worksite, (err, worksite) => {
+					if (worksite.jobs.indexOf(job._id) > -1) {
+						return
+					} else {
+						worksite.jobs.push(job._id);
+					}
+					worksite.save((err, worksite) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+					// 删除当前行业类别下的岗位
+					Worksite.findOne({"jobs": job._id}, (err, worksite) => {
+						if (worksite.jobs.length > 0) {
+							worksite.jobs.forEach((e, i) => {
+								if (e.toString() === job._id.toString()) {
+									worksite.jobs.splice(i, 1)
+								}
+							});
+							worksite.save((err, worksite) => {
+								if (err) {
+									console.log(err);
+								} else {
+									console.log("保存成功");
+								}
+							})
+						}
+					})
+				});
 				res.redirect('/');
 			})
 		})
 	} else {
 		_job = new Job(jobObj);
-		let categoryId = jobObj.category;
-		if (categoryId) {
+		let worksiteId = jobObj.worksite;
+		if (worksiteId) {
 			_job.save((err, job) => {
 				if (err) {
 					console.log(err)
 				}
-				Category.findById(categoryId, (err, category) => {
-					category.jobs.push(_job.id);
-					category.save((err, category) => {
+				// 保存行业类别下的岗位
+				Worksite.findById(worksiteId, (err, worksite) => {
+					worksite.jobs.push(_job.id);
+					worksite.save((err, worksite) => {
 						if (err) {
 							console.log(err)
 						}
-						res.redirect('/weintern/job/' + movie._id)
+						res.redirect('/weintern/job/detail/' + job._id)
 					})
 				})
 			})
@@ -161,6 +195,13 @@ router.delete('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
 			let index = category.jobs.indexOf(id);
 			category.jobs.splice(index, 1);
 			category.save((err, category) => {
+				if (err) console.log(err);
+			})
+		});
+		Worksite.findOne({"jobs": id}, (err, worksite) => {
+			let index = worksite.jobs.indexOf(id);
+			worksite.jobs.splice(index, 1);
+			worksite.save((err, worksite) => {
 				if (err) console.log(err);
 			})
 		});
@@ -196,7 +237,7 @@ router.post('/weintern/job/comment', (req, res) => {
 					console.log(err)
 				} else {
 					console.log("回复评论人", comment);
-					res.redirect("/weintern/job/" + movieId)
+					res.redirect("/weintern/job/detail/" + jobId)
 				}
 			})
 		})
@@ -211,7 +252,7 @@ router.post('/weintern/job/comment', (req, res) => {
 				// .exec((err, comments) => {
 				//     res.send(comments)
 				// })
-				res.redirect("/weintern/job/" + jobId)
+				res.redirect("/weintern/job/detail/" + jobId)
 			}
 		})
 	}
