@@ -4,7 +4,7 @@
 			h3(style="margin-top:15px;") #{title}
 		if title=="首页"
 			.col-md-4
-				form#form-search(action="/search",method="post",onSubmit="return false")
+				form#form-search(action="/weintern/search",method="post",onSubmit="return false")
 					.input-group(style="padding-top:10px")
 						input.form-control(type="text",onkeydown="onKeyDown(this)",name="query",placeholder="输入关键字搜索")
 						span.input-group-addon
@@ -13,24 +13,24 @@
 			if user
 				h5.text-right(style="display:flex;align-items:center")
 					span(style="white-space:nowrap") 欢迎您，
-					a(href="/user/center?userId=#{user._id}",style="color:#337ab7;font-style:normal;margin-right:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;") &nbsp;#{user.name}
+					a(href="/weintern/user/center?userId=#{user._id}",style="color:#337ab7;font-style:normal;margin-right:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;") &nbsp;#{user.name}
 					span.dropdown(style="display: inline-block;")
 						button.btn.btn-primary.dropdown-toggle(id="dLable",type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false") 后台管理
 							span.caret
 						ul(class="dropdown-menu",aria-labelledby="dLable")
 							li
-								a(href="/job/index/list") 电影列表
+								a(href="/weintern/job/list") 岗位列表
 							li
-								a(href="/job/index/add") 电影录入
+								a(href="/weintern/job/add") 岗位录入
 							li
-								a(href="/job/category/list") 电影分类
+								a(href="/weintern/job/category/list") 岗位分类
 							li
-								a(href="/job/category/new") 新增分类
+								a(href="/weintern/job/category/add") 新增岗位分类
 							li
-								a(href="/job/user/list") 用户列表
+								a(href="/weintern/user/list") 用户列表
 							li
 								a(href="/") 返回首页
-					a.btn.btn-danger(href="/loginout",style="display:inline; margin-left:10px;") 注销
+					a.btn.btn-danger(href="/weintern/loginout",style="display:inline; margin-left:10px;") 注销
 			else
 				h5.text-right(style="margin-top: 10px")
 				a(href="/",class="btn btn-primary pull-right",style="margin:0 0 10px 10px",data-toggle="modal",data-target="#signin-modal") 登录
@@ -39,7 +39,7 @@
 #signin-modal.modal.fade
 	.modal-dialog
 		.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
-			form(method="POST",action="/user/signIn")
+			form(method="POST",action="/weintern/user/signIn")
 				.modal-header
 					h4.modal-title 登录
 				.modal-body
@@ -56,7 +56,7 @@
 #signup-modal.modal.fade
 	.modal-dialog
 		.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
-			form(method="POST",action="/user/signUp")
+			form(method="POST",action="/weintern/user/signUp")
 				.modal-header
 					h4.modal-title 注册
 				.modal-body

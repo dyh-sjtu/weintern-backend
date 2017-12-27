@@ -142,7 +142,7 @@ router.post('/weintern/job/new', requiredAdmin, (req, res) => {
 					});
 					category.save((err, category) => {
 						job.category = category._id;
-						job.save((err, movie) => {
+						job.save((err, job) => {
 							res.redirect('/weintern/job/' + job._id);
 						})
 					})
@@ -166,7 +166,7 @@ router.delete('/weintern/job/list', requiredAdmin, (req, res) => {
 				if (err) console.log(err);
 			})
 		});
-		Job.remove({_id: id}, (err, movie) => {
+		Job.remove({_id: id}, (err, job) => {
 			if (err) {
 				console.log(err)
 			} else {

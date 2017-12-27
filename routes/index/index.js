@@ -21,10 +21,10 @@ router.get('/', (req, res) => {
 				})
 			}
 		})
-})
+});
 
-// detail
-router.get('weintern/index/:id', (req, res) => {
+// 岗位详情
+router.get('/weintern/job/:id', (req, res) => {
 	let id = req.params.id;
 	Job.update({_id: id}, {'$inc': {'pv': 1}}, (err) => {
 		if (err) console.log(err);
@@ -42,8 +42,10 @@ router.get('weintern/index/:id', (req, res) => {
 				});
 			})
 	})
-})
-router.get('weintern/index/categoryResult', (req, res) => {
+});
+
+// 单个分类下的岗位列表
+router.get('/weintern/job/category/result', (req, res) => {
 	let size = 4; // 一页8个
 	let categoryId = req.query.cat;
 	let pageSize = parseInt(req.query.pageSize);
@@ -70,14 +72,14 @@ router.get('weintern/index/categoryResult', (req, res) => {
 });
 
 // 实习搜索页面
-router.post('weintern/search', (req, res) => {
+router.post('/weintern/search', (req, res) => {
 	// let pageSize = req.query.pageSize;
 	let q = req.body.query;
 	let reg = new RegExp(q + '.*', 'i');
 	let totalSize = 0;
 	Job.find({jobname: reg}, (err, jobs) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
-			Category.find({name: reg}).populate("jobs", "poster title").exec((err, categories) => {
+			Category.find({name: reg}).populate("jobs", "jobname").exec((err, categories) => {
 				categories.forEach((item, index) => {
 					// console.log(ele.movies.length)
 					totalSize += item.jobs.length;

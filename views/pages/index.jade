@@ -7,16 +7,15 @@ block content
 					.panel.panel-default
 						.panel-heading.clearfix(style="position:relative")
 							h3 #{cat.name}
-							if cat.movies && cat.movies.length >= 4
-								a(href="/index/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
+							if cat.jobs && cat.jobs.length >= 4
+								a(href="/weintern/job/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
 						.panel-body
-							if cat.movies && cat.movies.length > 0
+							if cat.jobs && cat.jobs.length > 0
 								.row
-									each item in cat.movies 
+									each item in cat.jobs
 										.col-md-3
 											.thumbnail
-												a(href="/index/"+item._id)
-													img(src=item.poster,alt="#{item.title}",style="height:350px;")
+												a(href="/weintern/job/"+item._id)
 												.caption
-													h5=item.title
-													a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
+													h5=item.jobname
+													a.btn.btn-primary(href="/weintern/job/#{item._id}",role="button") 查看岗位详情
