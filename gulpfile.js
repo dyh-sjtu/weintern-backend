@@ -20,6 +20,9 @@ gulp.task('js', function() {
 		.pipe(jshint()) // 进行检查
 		.pipe(jshint.reporter('default')) // 对代码进行报错提示
 });
+gulp.task('css', function() {
+	return gulp.src(['./public/css/*.css']) // 检查文件：pulic/css目录下所有的css文件
+});
 
 gulp.task('nodemon', function(cb) {
 	var called = false;

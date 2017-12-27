@@ -1,0 +1,21 @@
+extends ../layout
+block content
+	.container
+		.row
+			.col-md-12
+				form.form-horizontal(method="post",action="/weintern/job/worksite/save")
+					if worksite._id
+						input(type="hidden", name="worksite[_id]", value="#{worksite._id}")
+					.form-group
+						label.col-sm-2.control-label 工作地点分类
+						.col-sm-10
+							each item in worksiteArr
+								label.radio-inline
+									if worksite.addr
+										input(type="radio", value="#{item}", name="worksite[addr]", checked=item.toString() == worksite.addr.toString())
+									else
+										input(type="radio", value="#{item}", name="worksite[addr]")
+									| #{item}
+					.form-group
+						.col-sm-offset-2.col-sm-10
+							button.btn.btn-primary(type="submit") 保存

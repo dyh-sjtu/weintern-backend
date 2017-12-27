@@ -1,84 +1,105 @@
 extends ../layout
+
 block content
 	.container
 		.row
-			form.form-horizontal(method="post",action="/weintern/job/add",enctype='form')
+			form.form-horizontal(method="post",action="/weintern/job/save", enctype="multipart/form-data")
 				.form-group
-					label.col-sm-2.control-label(for="inputDouban") 同步豆瓣
+					label.col-sm-2.control-label(for="inputCompany") 招聘公司
 					.col-sm-10
-						input#inputDouban.form-control(type="text",placeholder="请输入豆瓣电影ID",value="")
+						input#inputCompany.form-control(type="text",placeholder="请输入公司名称",name="job[company]", value='#{job.company}')
+				.form-group
+					label.col-sm-2.control-label(for="inputJobname") 职位名称
+					.col-sm-10
+						input#inputJobname.form-control(type="text",placeholder="请输入职位名称",name="job[jobname]", value='#{job.jobname}')
 				if job._id
 					input(type="hidden", name="job[_id]", value=job._id)
 				.form-group
-					label.col-sm-2.control-label(for="inputCategory") 电影分类
-					.col-sm-10
-						input#inputCategory.form-control(type="text",name="index[categoryName]",value=movie.categoryName)
-				.form-group
-					label.col-sm-2.control-label 分类选择
+					label.col-sm-2.control-label 岗位分类选择
 					.col-sm-10
 						each cat in categories
 							label.radio-inline
-								if movie.category
-									input(type="radio", name="index[category]", value=cat._id, checked=cat._id.toString()==movie.category.toString())
+								if job.category
+									input(type="radio", name="job[category]", value=cat._id, checked=cat._id.toString()==job.category.toString())
 								else
-									input(type="radio", name="index[category]", value=cat._id)
+									input(type="radio", name="job[category]", value=cat._id)
 								| #{cat.name}
 				.form-group
-					label.col-sm-2.control-label(for="inputTitle") 电影名字
+					label.col-sm-2.control-label(for="inputDesc") 岗位简述
 					.col-sm-10
-						input#inputTitle.form-control(type="text",name="index[title]",value="#{movie.title}")
+						input#inputDesc.form-control(type="text",name="job[desc]",placeholder="请描述实习岗位及公司的简介", value="#{job.desc}")
 				.form-group
-					label.col-sm-2.control-label(for="inputDoctor") 电影导演
-					.col-sm-10
-						input#inputDoctor.form-control(type="text",name="index[doctor]",value="#{movie.doctor}")
+					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
+					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
+						input#inputInternWeek.form-control(type="text",placeholder="请填入一周实习天数要求",name="job[internWeek]",value="#{job.internWeek}")
+						span.input-group-addon 天每周
 				.form-group
-					label.col-sm-2.control-label(for="inputLanguage") 语种
-					.col-sm-10
-						input#inputLanguage.form-control(type="text",name="index[language]",value="#{movie.language}")
+					label.col-sm-2.control-label(for="inputInterMonth") 实习月份
+					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
+						input#inputInterMonth.form-control(type="text",placeholder="请填入岗位实习持续月份要求",name="job[interMonth]",value="#{job.interMonth}")
+						span.input-group-addon 个月
 				.form-group
-					label.col-sm-2.control-label(for="inputCountry") 国家
+					label.col-sm-2.control-label 是否可转正
 					.col-sm-10
-						input#inputCountry.form-control(type="text",name="index[country]",value="#{movie.country}")
+						label.radio-inline
+							input(type="radio", value="是", name="job[canBeRegular]", checked=job.canBeRegular)
+							| 是
+						label.radio-inline
+							input(type="radio", value="否", name="job[canBeRegular]", checked=!job.canBeRegular)
+							| 否
 				.form-group
-					label.col-sm-2.control-label(for="inputPoster") 封面图片
+					label.col-sm-2.control-label(for="inputWelfare") 职位诱惑
 					.col-sm-10
-						input#inputPoster.form-control(type="text",name="index[poster]",value="#{movie.poster}")
+						input#inputWelfare.form-control(type="text", placeholder="请填写该岗位的职位福利", name="job[welfare]", value="#{job.welfare}")
 				.form-group
-					label.col-sm-2.control-label(for="inputFlash") 片源地址
+					label.col-sm-2.control-label 学历要求
 					.col-sm-10
-						input#inputFlash.form-control(type="text",name="index[flash]",value="#{movie.flash}")
+						label.radio-inline
+							input(type="radio", name="job[education]", value="不限", checked=job.education == '不限')
+							| 不限
+						label.radio-inline
+							input(type="radio", name="job[education]", value="专科", checked=job.education == '专科')
+							| 专科
+						label.radio-inline
+							input(type="radio", name="job[education]", value="本科", checked=job.education == '本科')
+							| 本科
+						label.radio-inline
+							input(type="radio",name="job[education]", value="硕士", checked=job.education == '硕士')
+							| 硕士
+						label.radio-inline
+							input(type="radio",name="job[education]", value="博士", checked=job.education == '博士')
+							| 博士
+
 				.form-group
-					label.col-sm-2.control-label(for="inputYear") 上映年份
+					label.col-sm-2.control-label(for="UploadImage") 上传企业logo
 					.col-sm-10
-						input#inputYear.form-control(type="text",name="index[year]",value="#{movie.year}")
+						a.upload-file(href="javascript:;") 点击选择并上传文件
+							span.upload-message.pull-right
+							input#UploadImage.form-control(type="file", name="uploadPic")
 				.form-group
-					label.col-sm-2.control-label(for="inputSummary") 电影简介
+					label.col-sm-2.control-label(for="inputNote") 岗位备注
 					.col-sm-10
-						input#inputSummary.form-control(type="text",name="index[summary]",value="#{movie.summary}")
+						input#inputNote.form-control(type="text", name="job[note]", placeholder="其他信息统一填写在这里", value="#{job.note}")
+				.form-group
+					label.col-sm-2.control-label(for="inputDeadline") 截止时间
+					#deadline_date.col-sm-10.date.input-group(style="padding-left:15px;padding-right:15px")
+						input#inputDeadline.form-control(type="text",name="job[deadline]", value="#{moment(job.deadline).format('YYYY-MM-DD')}")
+						span.input-group-addon
+							i.glyphicon.glyphicon-calendar
+				.form-group
+					label.col-sm-2.control-label(for="inputEmail") 投递邮箱
+					.col-sm-10
+						input#inputEmail.form-control(type="email",placeholder="请输入投递邮箱",name="job[email]", value='#{job.email}')
 				.form-group
 					.col-sm-offset-2.col-sm-10
 						button.btn.btn-primary(type="submit") 录入
 	script.
-		$("#inputDouban").blur(function() {
-			var doubanMovieId = $(this).val();
-			$.ajax({
-				url: `https://api.douban.com/v2/movie/subject/${doubanMovieId}`,
-				method: 'get',
-				dataType: "jsonp",
-				jsonp: "callback",
-				success: function(data) {
-					console.log(data);
-					var directors = data.directors;
-					var directorArray = [];
-					$.each(directors,function(index,ele){
-						directorArray[index] = ele.name
-					})
-					$("#inputTitle").val(data.title);
-					$("#inputDoctor").val(directorArray.join(" / "));
-					$("#inputCountry").val(data.countries.join(" / "));
-					$("#inputPoster").val(data.images.large);
-					$("#inputYear").val(data.year);
-					$("#inputSummary").val(data.summary);
-				}
-			})
+		$("#deadline_date").datetimepicker({
+			format: "YYYY-MM-DD",
+			locale: moment.locale('zh-cn')
+		});
+		// 上传文件样式修改
+		$('.upload-file').on("change", "input[type='file']", function () {
+			let filePath = $(this).val();
+			$('.upload-message').html('文件路径:  ' + filePath);
 		})

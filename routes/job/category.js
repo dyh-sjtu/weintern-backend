@@ -4,13 +4,14 @@ let Job = require('../../models/job');
 let Category = require('../../models/category');
 
 // 权限中间件
-let {requiredLogin, requiredAdmin} = require('../middleware/auth');
+let Auth = require('../middleware/auth');
+
 // 没有挂载路径的中间件，应用的每个请求都会执行该中间件
-router.use(requiredLogin);
+router.use(Auth.requiredLogin);
 
 // 行业类别录入页
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
-router.get('/weintern/job/category/add', requiredAdmin, (req, res) => {
+router.get('/weintern/job/category/add', Auth.requiredAdmin, (req, res) => {
 	res.render('categoryAdd', {
 		title: '电影分类录入页',
 		category: {},
@@ -18,7 +19,7 @@ router.get('/weintern/job/category/add', requiredAdmin, (req, res) => {
 });
 
 // 保存行业类别
-router.post('/weintern/job/category/save', requiredAdmin, (req, res) => {
+router.post('/weintern/job/category/save', Auth.requiredAdmin, (req, res) => {
 	let categoryObj = req.body.category;
 	let id = categoryObj._id;
 	let name = categoryObj.name;
@@ -44,7 +45,7 @@ router.post('/weintern/job/category/save', requiredAdmin, (req, res) => {
 });
 
 // 行业类别列表页
-router.get('/weintern/job/category/list', requiredAdmin, (req, res) => {
+router.get('/weintern/job/category/list', Auth.requiredAdmin, (req, res) => {
 	Category.fetch((err, categories) => {
 		if (err) {
 			console.log(err)
@@ -58,7 +59,7 @@ router.get('/weintern/job/category/list', requiredAdmin, (req, res) => {
 });
 
 // 行业类别更新页
-router.get('/weintern/job/category/update/:id', requiredAdmin, (req, res) => {
+router.get('/weintern/job/category/update/:id', Auth.requiredAdmin, (req, res) => {
 	let id = req.params.id;
 	if (id) {
 		Category.findById(id, (err, category) => {
@@ -72,7 +73,7 @@ router.get('/weintern/job/category/update/:id', requiredAdmin, (req, res) => {
 });
 
 // 行业类别删除
-router.delete('/weintern/job/category/del', requiredAdmin, (req, res) => {
+router.delete('/weintern/job/category/del', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		Job.find({category: id}, (err, jobs) => {

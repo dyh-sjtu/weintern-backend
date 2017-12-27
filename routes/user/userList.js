@@ -2,12 +2,12 @@ let express = require('express');
 let router = express.Router();
 let User = require('../../models/user');
 // 权限中间件
-let {requiredLogin, requiredAdmin} = require('../middleware/auth');
+let Auth = require('../middleware/auth');
 
-router.use(requiredLogin);
+router.use(Auth.requiredLogin);
 
 // 用户列表
-router.get('/weintern/user/list', requiredAdmin, (req, res) => {
+router.get('/weintern/user/list', Auth.requiredAdmin, (req, res) => {
 	User.fetch((err, users) => {
 		if (err) {
 			console.log(err)
@@ -21,7 +21,7 @@ router.get('/weintern/user/list', requiredAdmin, (req, res) => {
 });
 
 // 删除用户
-router.delete('/weintern/user/list', requiredAdmin, (req, res) => {
+router.delete('/weintern/user/list', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		User.remove({

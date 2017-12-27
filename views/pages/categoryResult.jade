@@ -1,43 +1,43 @@
 extends ../layout
 block content
-    .container
-        .row
-            .col-md-12
-                .panel.panel-default
-                    each cat in categoris
-                        .panel-heading
-                            h3 #{cat.name}
-                        .panel-body
-                            if cat.movies && cat.movies.length > 0
-                                .row
-                                    each item,index in cat.movies 
-                                        .col-md-3
-                                            .thumbnail
-                                                a(href="/index/"+item._id)
-                                                    img(src=item.poster,alt="#{item.title}",style="height:350px;")
-                                                .caption
-                                                    h5=item.title
-                                                    a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
-                                nav(style="text-align: center")
-                                    ul.pagination.pagination-lg(style="margin:10px 0")
-                                        if pageSize-1 <= 0
-                                            li.previous.disabled
-                                                a(href='javascript:;') «
-                                        else
-                                            li.previous
-                                                a(href='/index/category/result?cat=#{categoryId}&pageSize=#{pageSize-1}') «
-                                        -for(var i = 0; i < page; i++){
-                                            -if( pageSize == (i+1)){
-                                                li.active
-                                                    span #{pageSize}
-                                            -}else{
-                                                li
-                                                    a(href='/index/category/result?cat=#{categoryId}&pageSize=#{i+1}') #{i+1}
-                                            -}
-                                        -}
-                                        if pageSize+1 > page   
-                                            li.next.disabled
-                                                a(href='javascript:;') »
-                                        else
-                                            li.next
-                                                a(href='/index/category/result?cat=#{categoryId}&pageSize=#{pageSize+1}') »
+	.container
+		.row
+			.col-md-12
+				.panel.panel-default
+					each cat in categoris
+						.panel-heading
+							h3 #{cat.name}
+						.panel-body
+							if cat.jobs && cat.jobs.length > 0
+								.row
+									each item,index in cat.jobs
+										.col-md-3
+											.thumbnail
+												a(href="/weintern/job/detail/" + item._id)
+													img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
+												.caption
+													h5 #{item.company}
+													a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
+								nav(style="text-align: center")
+									ul.pagination.pagination-lg(style="margin:10px 0")
+										if pageSize - 1 <= 0
+											li.previous.disabled
+												a(href='javascript:;') «
+										else
+											li.previous
+												a(href='/weintern/job/category/result?cat=#{categoryId}&pageSize=#{pageSize - 1}') «
+										-for(var i = 0; i < page; i++){
+										-if( pageSize == (i+1)){
+										li.active
+											span #{pageSize}
+										-}else{
+										li
+											a(href='/weintern/job/category/result?cat=#{categoryId}&pageSize=#{i + 1}') #{i + 1}
+										-}
+										-}
+										if pageSize + 1 > page
+											li.next.disabled
+												a(href='javascript:;') »
+										else
+											li.next
+												a(href='/weintern/job/category/result?cat=#{categoryId}&pageSize=#{pageSize + 1}') »
