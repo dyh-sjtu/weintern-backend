@@ -2,4 +2,6 @@
 /public/libs
 node_modules
 .idea
-public/uploads/*
+public/uploads/*.jpeg
+public/uploads/*.jpg
+public/uploads/*.gif
