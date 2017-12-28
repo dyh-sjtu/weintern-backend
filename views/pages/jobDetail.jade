@@ -53,7 +53,8 @@ block content
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.companyAddr}
 					h3.weintern-black-normal.weintern-font-larger 投递邮箱地址:
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-							a(href="javascript:;") #{job.email}
+							span Email: &nbsp;&nbsp;&nbsp;
+								a(href="javascript:;") #{job.email}
 					h3.weintern-black-normal.weintern-font-larger 截止日期:
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{moment(job.deadline).format("YYYY-MM-DD")}
 		.row

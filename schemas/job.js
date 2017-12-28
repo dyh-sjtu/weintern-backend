@@ -15,7 +15,7 @@ let JobSchema = new mongoose.Schema({
 	salary: String,  // 薪资水平
 	worksite: {  // 实习地点
 		type: ObjectId,
-		ref: 'worksite'
+		ref: 'Worksite'
 	},
 	internWeek:String,  // 实习时长，一周几天
 	interMonth: String,  // 实习时长，持续月份

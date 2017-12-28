@@ -13,17 +13,19 @@ router.use(Auth.requiredLogin);
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
 // 获得实习岗位列表
 router.get('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
-	// console.log(res.locals.job)
-	Job.find({}, (err, jobs) => {
-		if (err) {
-			console.log(err)
-		} else {
-			res.render('jobList', {
-				title: '实习岗位列表',
-				jobs: jobs
-			})
-		}
-	})
+	Job.find({})
+		.populate("category", "name")
+		.populate("worksite", "addr")
+		.exec((err, jobs) => {
+			if (err) {
+				console.log(err)
+			}else {
+				res.render('jobList', {
+					title: '实习岗位列表',
+					jobs: jobs,
+				})
+			}
+		})
 });
 
 // 实习岗位录入页
@@ -227,7 +229,6 @@ router.delete('/weintern/job/list/del', Auth.requiredAdmin, (req, res) => {
 
 // 保存对该实习岗位的评价
 router.post('/weintern/job/comment', (req, res) => {
-	// ajax提交评论直接评论已经实现，对评论人的评论暂未实现
 	let _comment = req.body.comment;
 	let comment = new Comment(_comment);
 	let jobId = _comment.job;

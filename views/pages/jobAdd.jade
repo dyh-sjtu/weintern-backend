@@ -24,6 +24,7 @@ block content
 					input(type="hidden", name="job[_id]", value=job._id)
 				.form-group
 					label.col-sm-2.control-label 岗位分类选择
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10
 						each cat in categories
 							label.radio-inline
@@ -33,7 +34,8 @@ block content
 									input(type="radio", name="job[category]", value=cat._id)
 								| #{cat.name}
 				.form-group
-					label.col-sm-2.control-label 岗位分类选择
+					label.col-sm-2.control-label 地点分类选择
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10
 						each worksite in worksites
 							label.radio-inline

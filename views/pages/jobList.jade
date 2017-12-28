@@ -23,7 +23,7 @@ block content
 								td(style="vertical-align: middle;text-align:center;") #{index+1}
 								td(style="vertical-align: middle;") #{item.jobname}
 								td(style="vertical-align: middle;") #{item.company}
-								td(style="vertical-align: middle;text-align:center;") #{item.worksite}
+								td(style="vertical-align: middle;text-align:center;") #{item.worksite.addr}
 								td(style="vertical-align: middle;text-align:center;") #{item.email}
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center;") #{item.category.name}
