@@ -34,7 +34,7 @@ router.post('/weintern/user/info', Auth.requiredLogin, SaveFile.saveFile, (req, 
 			if (err) {
 				console.log(err)
 			} else {
-				res.redirect(`/weintern/status?return_url=/user/center?userId=${userId}&code=1&tips=保存成功`)
+				res.redirect(`/weintern/status?return_url=/weintern/user/center?userId=${userId}&code=1&tips=保存成功`)
 			}
 		})
 	})
