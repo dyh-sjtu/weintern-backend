@@ -16,8 +16,17 @@ block content
 												a(href="/weintern/job/detail/" + item._id)
 													img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
 												.caption
-													h5 #{item.company}
-													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
+													span.weintern-font-larger.weintern-black-deeper #{item.company}
+													span.weintern-font-larger.weintern-black-deeper.pull-right #{item.jobname}
+													if item.salary != "不限"
+														h5.weintern-gray-normal ￥#{item.salary}元/天 | #{item.internWeek}天/周 | #{item.interMonth}个月 |
+															if item.canBeRegular
+															|  可转正
+													else
+														h5.weintern-gray-normal 薪资#{item.salary} | #{item.internWeek}天/周 | #{item.interMonth}个月 |
+															if item.canBeRegular
+															|  可转正
+													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}",role="button") 查看岗位详情
 								nav(style="text-align: center")
 									ul.pagination.pagination-lg(style="margin:10px 0")
 										if pageSize - 1 <= 0
