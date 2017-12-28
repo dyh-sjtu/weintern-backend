@@ -17,7 +17,7 @@ block content
 													img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
 												.caption
 													h5 #{item.company}
-													a.btn.btn-primary(href="index/#{item._id}",role="button") 观看预告片
+													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
 								nav(style="text-align: center")
 									ul.pagination.pagination-lg(style="margin:10px 0")
 										if pageSize - 1 <= 0
@@ -41,3 +41,6 @@ block content
 										else
 											li.next
 												a(href='/weintern/job/category/result?cat=#{categoryId}&pageSize=#{pageSize + 1}') »
+									.col-sm-offset-11
+										a(href="/")
+											button.btn.btn-primary(type="button") 返回首页

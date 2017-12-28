@@ -26,3 +26,64 @@
 	color: #004974;
 	text-decoration: none;
 }
+/*字体大小定义*/
+.weintern-font-small{
+	font-size: 12px;
+}
+.weintern-font-normal{
+	font-size: 13px;
+}
+.weintern-font-large{
+	font-size: 15px;
+}
+.weintern-font-larger{
+	font-size: 18px;
+}
+
+/*颜色变量定义*/
+.weintern-black-normal {
+	color: #2B3441;
+}
+.weintern-black-deep {
+	color: #202733;
+}
+.weintern-black-deeper {
+	color: #171F2A;
+}
+.weintern-black-normal{
+	color: rgba(43, 52, 65, 0.9);
+}
+
+.weintern-gray-normal {
+	color: #B0B0B9;
+}
+.weintern-gray-deep {
+	color: #6B737B;
+}
+.weintern-gray-light {
+	color: #CACAD3;
+}
+.weintern-gray-lighter {
+	color: #EBEBF0;
+}
+.weintern-gray-lightest {
+	color: #FAFAFB;
+}
+
+.weintern-yellow-normal {
+	color: #F5BC21;
+}
+.weintern-yellow-deep {
+	color: #DFA508;
+}
+
+.weintern-red-normal {
+	color: #F26245;
+}
+.weintern-green-normal {
+	color: #2CD299;
+}
+
+.weintern-white-normal {
+	color: #F5F5F7;
+}

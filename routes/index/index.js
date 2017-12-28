@@ -7,19 +7,37 @@ let Worksite = require('../../models/worksite');
 
 // 首页
 router.get('/', (req, res) => {
-	Category.find({}).limit(5)
-		.populate({path: "jobs", options: {limit: 5}})
-		.exec((err, categories) => {
-			if (err) {
-				console.log(err)
-			} else {
-				// console.log("categories",categories)
-				res.render('index', {
-					title: '首页',
-					categories: categories
-				})
-			}
-		})
+	let type = req.query.type;
+	console.log(type);
+	if (type && type == "worksite") {
+		Worksite.find({})
+			.populate({path: "jobs", options: {limit: 5}})
+			.exec((err, worksites) => {
+				if (err) {
+					console.log(err)
+				} else {
+					res.render("index", {
+						title: "首页",
+						worksites: worksites
+					})
+				}
+			})
+	} else {
+		Category.find({}).limit(5)
+			.populate({path: "jobs", options: {limit: 5}})
+			.exec((err, categories) => {
+				if (err) {
+					console.log(err)
+				} else {
+					// console.log("categories",categories)
+					res.render('index', {
+						title: '首页',
+						categories: categories
+					})
+				}
+			})
+	}
+	
 });
 
 // 岗位详情
@@ -29,16 +47,27 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 		if (err) console.log(err);
 	});
 	Job.findById(id, (err, job) => {
+		let jobcontentArr = [],
+			skillArr = [];
+		job.jobcontent.split('；').forEach((item, index) => {
+			if (item != "")
+			jobcontentArr.push(item);
+		});
+		job.skill.split('；').forEach((item, index) => {
+			if (item != "")
+				skillArr.push(item);
+		});
 		Category.findById(job.category, (err, category) => {
 			Worksite.findById(job.worksite, (err, worksite) => {
 				Comment.find({job: id})
 					.populate("from", "name img")
 					.populate("reply.from reply.to", "name img")
 					.exec((err, comments) => {
-						console.log("comments", comments)
 						res.render('jobDetail', {
 							title: '岗位详情页 ',
 							job: job,
+							jobcontentArr: jobcontentArr,
+							skillArr: skillArr,
 							category: category,
 							worksite: worksite,
 							comments: comments
@@ -49,7 +78,7 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 	})
 });
 
-// 单个分类下的岗位列表
+// 单个岗位类型分类下的岗位列表
 router.get('/weintern/job/category/result', (req, res) => {
 	let size = 4; // 一页8个
 	let categoryId = req.query.cat;
@@ -58,7 +87,7 @@ router.get('/weintern/job/category/result', (req, res) => {
 	res.locals.categoryId = categoryId;
 	Category.findById(categoryId, (err, category) => {
 		totalSize = category.jobs.length;
-		let page = Math.ceil(totalSize/size); //分多少页
+		let page = Math.ceil(totalSize / size); //分多少页
 		Category.find({_id: categoryId})
 			.populate({path: "jobs", options: {limit: size, skip: (pageSize - 1) * size}})
 			.exec((err, categoris) => {
@@ -76,6 +105,32 @@ router.get('/weintern/job/category/result', (req, res) => {
 	})
 });
 
+// 单个地点分类下的岗位列表
+router.get('/weintern/job/worksite/result', (req, res) => {
+	let size = 4; // 一页8个
+	let worksiteId = req.query.site;
+	let pageSize = parseInt(req.query.pageSize);
+	let totalSize = 0; // 一共有多少数据；
+	res.locals.worksiteId = worksiteId;
+	Worksite.findById(worksiteId, (err, worksite) => {
+		totalSize = worksite.jobs.length;
+		let page = Math.ceil(totalSize / size); //分多少页
+		Worksite.find({_id: worksiteId})
+			.populate({path: "jobs", options: {limit: size, skip: (pageSize - 1) * size}})
+			.exec((err, worksites) => {
+				if (err) console.log(err);
+				res.render('worksiteResult', {
+					title: '当前工作地点',
+					worksites: worksites,
+					page: page,
+					categoryId: worksiteId,
+					pageSize: pageSize,
+				})
+			})
+		
+	})
+});
+
 // 实习搜索页面
 router.post('/weintern/search', (req, res) => {
 	// let pageSize = req.query.pageSize;
@@ -84,9 +139,8 @@ router.post('/weintern/search', (req, res) => {
 	let totalSize = 0;
 	Job.find({jobname: reg}, (err, jobs) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
-			Category.find({name: reg}).populate("jobs", "jobname").exec((err, categories) => {
+			Category.find({name: reg}).populate("jobs", "jobname image").exec((err, categories) => {
 				categories.forEach((item, index) => {
-					// console.log(ele.movies.length)
 					totalSize += item.jobs.length;
 				});
 				res.render('search', {

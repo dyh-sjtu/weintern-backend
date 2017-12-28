@@ -23,5 +23,37 @@ block content
 								td(style="vertical-align: middle;") #{item.img}
 								td(style="vertical-align: middle;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center")
-									button.btn.btn-danger.del-user(type="button",data-id="#{item._id}",style="margin:0 5px;",onclick="del(this,'/weintern/user/list')") 删除
-	script(src="/js/admin.js")
+									button.btn.btn-danger.del(type="button", disabled=localUser._id.toString() === item._id.toString() || item.role > 30, data-id="#{item._id}",data-toggle="modal") 删除
+	#del-modal.modal.fade
+		.modal-dialog
+			.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+				.modal-header
+					h4.modal-title 提示
+				.modal-body
+					h4(style="color:#c9302c") 确定删除该用户吗？删除后该用户下数据也被删除!
+				.modal-footer
+					button.btn.btn-default(type="button",data-dismiss="modal") 取消
+					button.btn.btn-success(type="button") 确定
+	script.
+		var userId = null;
+		var tr = null;
+		$(".del").click(function () {
+			$("#del-modal").modal();
+			userId = $(this).data("id");
+			tr = $(this).parents("tr");
+		})
+		$(".btn-success").click(function () {
+			if (userId) {
+				$.ajax({
+					type: 'DELETE',
+					url: '/weintern/user/list/del' + "?id=" + userId
+				}).done(function (res) {
+					if (res.success == 1) {
+						if (tr.length > 0) {
+							tr.remove();
+						}
+					}
+				})
+			}
+			$("#del-modal").modal('hide');
+		})

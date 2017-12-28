@@ -14,7 +14,7 @@ router.post('/weintern/user/signIn', (req, res) => {
 		if (!user) {
 			console.log('用户不存在');
 			let msg = "用户不存在，去注册吧！";
-			res.redirect(`/weintern/status?return_url=/signIn&code=0&tips=${msg}`)
+			res.redirect(`/weintern/status?return_url=/weintern/signUp&code=0&tips=${msg}`)
 		} else {
 			console.log('用户存在:' + name, password);
 			user.comparePassword(password, (err, isMatch) => {
@@ -27,7 +27,7 @@ router.post('/weintern/user/signIn', (req, res) => {
 				} else {
 					console.log('登录失败:Password is not matched');
 					let msg = "登录失败，密码可能错误，请重新登录！";
-					res.redirect(`/weintern/status?return_url=/signIn&code=0&tips=${msg}`)
+					res.redirect(`/weintern/status?return_url=/weintern/signIn&code=0&tips=${msg}`)
 				}
 			})
 		}
@@ -45,7 +45,7 @@ router.post('/weintern/user/signUp', (req, res) => {
 		if (err) console.log(err);
 		if (user) {
 			let msg = "账号存在，去登录吧！";
-			res.redirect(`/weintern/status?return_url=/signIn&code=0&tips=${msg}`)
+			res.redirect(`/weintern/status?return_url=/weintern/signIn&code=0&tips=${msg}`)
 		} else {
 			let _user = new User(userObj);
 			_user.firstSave = true;
@@ -54,16 +54,15 @@ router.post('/weintern/user/signUp', (req, res) => {
 					console.log(err)
 				}
 				let msg = "注册成功，去登录吧！";
-				res.redirect(`/weintern/status?return_url=/signIn&code=1&tips=${msg}`)
+				res.redirect(`/weintern/status?return_url=/weintern/signIn&code=1&tips=${msg}`)
 			})
 		}
 	})
 });
 
-// loginout
+// loginout 注销用户
 router.get('/weintern/loginout', (req, res) => {
-	// console.log("1",req.session.user)
-	// console.log("2",res.locals.user)
+	// 注销用户需要删除当前用户和本地session中的用户
 	delete req.session.user;
 	delete res.locals.user;
 	res.redirect('/');

@@ -2,31 +2,64 @@ extends ../layout
 block content
 	.container
 		.row
-			.col-md-8
-				h2 #{job.jobname}
-				h6 #{moment(job.meta.updateAt).format("YYYY-MM-DD HH:mm:ss")} 刷新
-				h4 简述:
-					span #{job.salary}/天 |
-					span #{worksite.addr} |
-					span #{job.education} |
-					span #{job.internWeek}天/周 |
-					span 实习#{job.interMonth}个月 |
+			.col-md-7
+				h1 #{job.jobname}
+				h2.weintern-black-normal.weintern-font-small #{moment(job.meta.updateAt).format("YYYY-MM-DD HH:mm:ss")} 刷新
+				h4.weintern-font-large.weintern-gray-deep
+					if job.salary == "不限"
+						span 薪资#{job.salary} |
+					else
+						span #{job.salary}/天 |
+					span  #{worksite.addr} |
+					span  #{job.education} |
+					span  #{job.internWeek}天/周 |
+					span  实习#{job.interMonth}个月 |
 					if job.canBeRegular
-						span 提供转正机会
+						span  提供转正机会
 				if job.welfare
-					h4 职位福利: #{job.welfare}
-			.col-md-4
+					h2.weintern-font-larger.weintern-gray-deeper 职位福利:  #{job.welfare}
+			.col-md-5
 				.media
 					.media-left
 						if job.companyUrl
 							a(href='#{job.companyUrl}')
-								img.media-object.img-rounded(src='/uploads/#{job.image}', alt='公司logo', style="height:50px")
+								img.media-object.img-rounded(src='/uploads/#{job.image}', alt='公司logo', style="width:150px;height:150px")
 						else
 							a(href='javascript:;')
-								img.media-object.img-rounded(src='/uploads/#{job.image}', alt='公司logo', style="height:50px")
+								img.media-object.img-rounded(src='/uploads/#{job.image}', alt='公司logo', style="height:150px")
 					.media-body
-						h3.media-heading(style='color: blue') #{job.company}
-						h4 #{category.name}
+						h2.media-heading
+							if job.companyUrl
+								a(href="#{job.companyUrl}") #{job.company}
+							else
+								a(href="javascript:;") #{job.company}
+						h2(style="margin-top: 85px") #{category.name}
+		.row
+			.col-md-7(style="margin-top:50px")
+				h2 职位描述
+				h2.weintern-font-larger.weintern-black-normal 工作内容:
+					.weintern-font-normal.weintern-gray-deep
+						each jobcontent in jobcontentArr
+							h6 #{jobcontent}；
+				.weintern-font-larger.weintern-black-normal(style="margin-top: 50px") 任职要求:
+					.weintern-font-normal.weintern-gray-deep
+						each skill in skillArr
+							h6 #{skill}；
+			.col-md-5(style="margin-top:50px")
+				h2 公司简介
+					h3.weintern-black-normal.weintern-font-larger 岗位描述:
+						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.desc}
+					h3.weintern-black-normal.weintern-font-larger 公司地址:
+						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.companyAddr}
+					h3.weintern-black-normal.weintern-font-larger 投递邮箱地址:
+						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							a(href="javascript:;") #{job.email}
+					h3.weintern-black-normal.weintern-font-larger 截止日期:
+						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{moment(job.deadline).format("YYYY-MM-DD")}
+		.row
+			.col-md-12
+				h2 岗位其他信息
+					h3.weintern-font-larger.weintern-gray-normal #{job.note}
 		h3(style="padding-bottom:12px;border-bottom:1px solid #d9d9d9;") 评论
 		.comment-list
 			each item in comments
@@ -53,17 +86,24 @@ block content
 									hr
 				hr
 		.row
-			form(id="form-comment",method="POST",action="/weintern/job/comment")
+			form(id="form-comment", method="POST", action="/weintern/job/comment")
 				.col-md-1
 					img(src="/images/headpic.png", style="width:64px;height:64px;border-radius:50%")
 				.col-md-11
-					textarea.form-control(cols="3",name="comment[content]",style="height:70px;",placeholder="说点什么吧！")
+					textarea.form-control(cols="3", name="comment[content]", style="height:70px;", placeholder="说点什么吧！")
 				if user
-					.form-group.pull-right(style="margin:15px;")
-						input(type="hidden",name="comment[index]",value="#{job._id}")
-						input(type="hidden",name="comment[from]",value="#{user._id}")
-						button#comment-btn.btn.btn-primary(type="submit") 发表评论
+					.form-group
+						.col-sm-2.col-sm-offset-1(style="margin-top:20px")
+							input(type="hidden",name="comment[index]",value="#{job._id}")
+							input(type="hidden",name="comment[from]",value="#{user._id}")
+							button#comment-btn.btn.btn-success(type="submit") 发表评论
+						.col-sm-2.pull-right(style="margin-top:20px;text-align:right")
+							a(href="/")
+								button.btn.btn-primary(type="button") 返回首页
 				else
-					.form-group.pull-right(style="margin:15px;")
-						a(href="/",data-toggle="modal",data-target="#signin-modal") 登录后评论
+					.form-group
+						.col-sm-2.col-sm-offset-1(style="margin-top:20px")
+							a(href="/",data-toggle="modal",data-target="#signin-modal")
+								button.btn.btn-info(type="button") 登录后评论
+
 	script(src="/js/comment.js")

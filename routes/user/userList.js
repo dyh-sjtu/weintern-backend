@@ -9,19 +9,21 @@ router.use(Auth.requiredLogin);
 // 用户列表
 router.get('/weintern/user/list', Auth.requiredAdmin, (req, res) => {
 	User.fetch((err, users) => {
+		let localUser = req.session.user;
 		if (err) {
 			console.log(err)
 		} else {
 			res.render('userList', {
 				title: '用户列表页',
-				users: users
+				users: users,
+				localUser: localUser
 			})
 		}
 	})
 });
 
 // 删除用户
-router.delete('/weintern/user/list', Auth.requiredAdmin, (req, res) => {
+router.delete('/weintern/user/list/del', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		User.remove({

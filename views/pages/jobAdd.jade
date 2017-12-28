@@ -13,6 +13,10 @@ block content
 					.col-sm-10
 						input#inputCompany.form-control(type="text",placeholder="请输入公司名称",name="job[company]", value='#{job.company}')
 				.form-group
+					label.col-sm-2.control-label(for="inputCompanyAddr") 公司地址
+					.col-sm-10
+						input#inputCompanyAddr.form-control(type="text", placeholder="请输入实习公司地址", name="job[companyAddr]", value="#{job.companyAddr}")
+				.form-group
 					label.col-sm-2.control-label(for="inputJobname") 职位名称
 					.col-sm-10
 						input#inputJobname.form-control(type="text",placeholder="请输入职位名称",name="job[jobname]", value='#{job.jobname}')
@@ -44,17 +48,19 @@ block content
 						input#inputDesc.form-control(type="text",name="job[desc]",placeholder="请描述实习岗位及公司的简介", value="#{job.desc}")
 				.form-group
 					label.col-sm-2.control-label(for="inputJobcontent") 岗位职责
-					.col-sm-10
-						textarea#inputJobcontent.form-control(cols="5", name="job[jobcontent]", placeholder="请填入岗位工作内容，以分号隔开，形式为1.**;2.**;3.**;") #{job.jobcontent}
+					.col-sm-10(style="color:red")
+						textarea#inputJobcontent.form-control(cols="5", name="job[jobcontent]", placeholder="请填入岗位工作内容") #{job.jobcontent}
+						| 以中文输入法下的分号隔开，形式为1.(内容1)；2.(内容2)；3.(内容3)
 				.form-group
 					label.col-sm-2.control-label(for="inputSkill") 岗位技能要求
-					.col-sm-10
-						textarea#inputSkill.form-control(cols="5", name="job[skill]", placeholder="请填入岗位技能要求，以分号隔开，形式为1.**;2.**;3.**;") #{job.skill}
+					.col-sm-10(style="color:red")
+						textarea#inputSkill.form-control(cols="5", name="job[skill]", placeholder="请填入岗位技能要求") #{job.skill}
+						| 以中文输入法分号隔开，形式为1.(内容1)；2.(内容2)；3.(内容3)
 				.form-group
 					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputInternWeek.form-control(type="text",placeholder="请填入一周实习天数要求",name="job[internWeek]",value="#{job.internWeek}")
-						span.input-group-addon 天每周
+						span.input-group-addon 天/周
 				.form-group
 					label.col-sm-2.control-label(for="inputInterMonth") 实习月份
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
@@ -71,8 +77,9 @@ block content
 							| 否
 				.form-group
 					label.col-sm-2.control-label(for="inputSalary") 实习薪资
-					.col-sm-10
+					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputSalary.form-control(type="text", placeholder="请填写该岗位的实习工资", name="job[salary]", value="#{job.salary}")
+						span.input-group-addon 元/天
 				.form-group
 					label.col-sm-2.control-label(for="inputWelfare") 职位诱惑
 					.col-sm-10
