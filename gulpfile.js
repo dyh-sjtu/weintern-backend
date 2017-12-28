@@ -16,7 +16,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
 });
 
 gulp.task('js', function() {
-	return gulp.src(['./routes/**/*.js', './schemas/*.js', './public/js/*.js']) // 检查文件：js目录下所有的js文件
+	return gulp.src(['./routes/**/*.js', './schemas/*.js', './public/js/*.js', './models/*.js']) // 检查文件：js目录下所有的js文件
 		.pipe(jshint()) // 进行检查
 		.pipe(jshint.reporter('default')) // 对代码进行报错提示
 });
