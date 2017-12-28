@@ -43,6 +43,7 @@ router.get('/', (req, res) => {
 // 岗位详情
 router.get('/weintern/job/detail/:id', (req, res) => {
 	let id = req.params.id;
+	let localUser = req.session.user;
 	Job.update({_id: id}, {'$inc': {'pv': 1}}, (err) => {
 		if (err) console.log(err);
 	});
@@ -70,7 +71,8 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 							skillArr: skillArr,
 							category: category,
 							worksite: worksite,
-							comments: comments
+							comments: comments,
+							user: localUser
 						});
 					})
 			})
@@ -132,14 +134,14 @@ router.get('/weintern/job/worksite/result', (req, res) => {
 });
 
 // 实习搜索页面
-router.post('/weintern/search', (req, res) => {
-	// let pageSize = req.query.pageSize;
-	let q = req.body.query;
+router.get('/weintern/search', (req, res) => {
+	let q = req.query.query;
+	// let size = 4;
 	let reg = new RegExp(q + '.*', 'i');
 	let totalSize = 0;
 	Job.find({jobname: reg}, (err, jobs) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
-			Category.find({name: reg}).populate("jobs", "jobname image").exec((err, categories) => {
+			Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek internMonth canBeRegular").exec((err, categories) => {
 				categories.forEach((item, index) => {
 					totalSize += item.jobs.length;
 				});
@@ -147,6 +149,7 @@ router.post('/weintern/search', (req, res) => {
 					title: '搜索页',
 					categories: categories,
 					number: totalSize,
+					// pageSize: Math.ceil(totalSize/size),
 					keywords: q,
 				})
 			})

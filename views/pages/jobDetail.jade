@@ -60,50 +60,56 @@ block content
 			.col-md-12
 				h2 岗位其他信息
 					h3.weintern-font-larger.weintern-gray-normal #{job.note}
-		h3(style="padding-bottom:12px;border-bottom:1px solid #d9d9d9;") 评论
-		.comment-list
-			each item in comments
-				.row
-					.col-md-1
-						a.comment_link(href="javascript:;",data-cid="#{item._id}",data-tid="#{item.from._id}")
+					hr
+		h2(style="padding-bottom:20px;border-bottom:1px solid #d9d9d9;") 评论
+			hr
+			.comment-list
+				each item in comments
+					.row
+						.col-md-1
 							img(src="/uploads/#{item.from.img}", style="width:64px;height:64px;border-radius:50%")
+						.col-md-11
+							h5(style="color:#337ab7") #{item.from.name}
+								span.pull-right(style="color:#999") #{moment(item.meta.createAt, 'YYYYDDMM').fromNow()}
+							h5(style="color:#999") #{item.content}
+								a.comments(href="#comments", data-cid='#{item._id}', data-tid='#{item.from._id}')
+									span.pull-right(style='color:#999') 回复
+							.comment-reply
+								if item.reply && item.reply.length > 0
+									each reply in item.reply
+										.row
+											.col-md-1
+												img(src="/uploads/#{reply.from.img}", style="width:64px;height:64px;border-radius:50%")
+											.col-md-11
+												h5(style="color:#337ab7")
+													span #{reply.from.name}
+													span(style="color:#666") &nbsp;回复&nbsp;
+													span #{reply.to.name}
+												h5(style="color:#999") #{reply.content}
+													a.comments(href="#comments", data-cid='#{item._id}', data-tid='#{reply.from._id}')
+														span.pull-right(style='color:#999') 回复
+										hr
+					hr
+			#comments.row
+				form#form-comment(method="POST",action="/weintern/job/comment")
+					.col-md-1
+						if user
+							img(src="/uploads/#{user.img}", style="width:64px;height:64px;border-radius:50%")
+						else
+							img(src="/uploads/headpic.png", style="width:64px;height:64px;border-radius:50%")
 					.col-md-11
-						h5(style="color:#337ab7") #{item.from.name}
-							span.pull-right(style="color:#999") #{moment(item.meta.createAt, 'YYYYDDMM').fromNow()}
-						p #{item.content}
-						.comment-reply
-							if item.reply && item.reply.length > 0
-								each reply in item.reply
-									.row
-										.col-md-1
-											img(src="/uploads/#{reply.from.img}", style="width:64px;height:64px;border-radius:50%")
-										.col-md-11
-											h5(style="color:#337ab7")
-												span #{reply.from.name} 
-												span(style="color:#666") 回复 
-												span #{reply.to.name}
-											p #{reply.content}
-									hr
-				hr
-		.row
-			form(id="form-comment", method="POST", action="/weintern/job/comment")
-				.col-md-1
-					img(src="/images/headpic.png", style="width:64px;height:64px;border-radius:50%")
-				.col-md-11
-					textarea.form-control(cols="3", name="comment[content]", style="height:70px;", placeholder="说点什么吧！")
-				if user
+						textarea.form-control(cols="3", name="comment[content]",style="height:70px;",placeholder="说点什么吧！")
 					.form-group
-						.col-sm-2.col-sm-offset-1(style="margin-top:20px")
-							input(type="hidden",name="comment[index]",value="#{job._id}")
-							input(type="hidden",name="comment[from]",value="#{user._id}")
-							button#comment-btn.btn.btn-success(type="submit") 发表评论
-						.col-sm-2.pull-right(style="margin-top:20px;text-align:right")
+						.col-sm-2.col-sm-offset-1(style="margin-top:15px")
 							a(href="/")
 								button.btn.btn-primary(type="button") 返回首页
-				else
-					.form-group
-						.col-sm-2.col-sm-offset-1(style="margin-top:20px")
-							a(href="/",data-toggle="modal",data-target="#signin-modal")
-								button.btn.btn-info(type="button") 登录后评论
-
+					if user
+						#comment-reply.form-group.pull-right(style="margin:15px;")
+							input(type="hidden",name="comment[job]",value="#{job._id}")
+							input(type="hidden",name="comment[from]",value="#{user._id}")
+							button#comment-btn.btn.btn-success(type="submit") 发表评论
+					else
+						.form-group.pull-right(style="margin:15px;")
+							a(href="/weintern/signIn")
+								button.btn.btn-primary(type="button") 登录后评论
 	script(src="/js/comment.js")

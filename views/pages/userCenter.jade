@@ -3,12 +3,12 @@ block content
 	.container
 		.row
 			.col-md-12
-				form.form-horizontal(method="post",action="/job/user/info",enctype="multipart/form-data")
+				form.form-horizontal(method="post",action="/weintern/user/info",enctype="multipart/form-data")
 					input(type="hidden",name="user[_id]",value="#{user._id}")
 					.form-group
 						label.col-sm-2.control-label(for="inputUserName") 用户名
 						.col-sm-10
-							input#inputUserName.form-control(type="text",name="user[name]",value=user.name,disabled="disabled")
+							input#inputUserName.form-control(type="text",name="user[name]",value=user.name, disabled="disabled")
 					.form-group
 						label.col-sm-2.control-label(for="inputSex") 性别
 						.col-sm-10
@@ -30,7 +30,7 @@ block content
 						label.col-sm-2.control-label(for="inputHeadPic") 头像
 						.col-sm-10
 							if !user.img
-								img(src="/images/headpic.png",style="width:80px;height:80px;")
+								img(src="/uploads/headpic.png",style="width:80px;height:80px;")
 							else
 								img(src="/uploads/#{user.img}",style="width:80px;height:80px;")
 					.form-group

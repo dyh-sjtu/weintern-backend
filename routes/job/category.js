@@ -13,7 +13,7 @@ router.use(Auth.requiredLogin);
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
 router.get('/weintern/job/category/add', Auth.requiredAdmin, (req, res) => {
 	res.render('categoryAdd', {
-		title: '电影分类录入页',
+		title: '行业分类录入',
 		category: {},
 	})
 });
@@ -51,7 +51,7 @@ router.get('/weintern/job/category/list', Auth.requiredAdmin, (req, res) => {
 			console.log(err)
 		} else {
 			res.render('categoryList', {
-				title: '行业分类列表页',
+				title: '行业分类列表',
 				categories: categories
 			})
 		}
@@ -65,7 +65,7 @@ router.get('/weintern/job/category/update/:id', Auth.requiredAdmin, (req, res) =
 		Category.findById(id, (err, category) => {
 			console.log(category);
 			res.render('categoryAdd', {
-				title: '行业类别更新页 > ' + category.name,
+				title: '行业类别更新 > ' + category.name,
 				category: category
 			})
 		})

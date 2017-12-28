@@ -10,7 +10,7 @@ router.use(Auth.requiredLogin);
 // 获取薪资录入页
 router.get('/weintern/job/worksite/add', Auth.requiredAdmin, (req, res) => {
 	res.render('worksiteAdd', {
-		title: '工作地点分类录入页',
+		title: '地点分类录入',
 		worksiteArr: ['上海', '苏州', '南京', '杭州', '无锡', '广州', '北京', '武汉', '重庆'],
 		worksite: {},
 	})
@@ -49,7 +49,7 @@ router.get('/weintern/job/worksite/list', Auth.requiredAdmin, (req, res) => {
 			console.log(err)
 		} else {
 			res.render('worksiteList', {
-				title: '工作地点分类列表页',
+				title: '地点分类列表',
 				worksites: worksites
 			})
 		}
@@ -63,7 +63,7 @@ router.get('/weintern/job/worksite/update/:id', Auth.requiredAdmin, (req, res) =
 		Worksite.findById(id, (err, worksite) => {
 			console.log(worksite);
 			res.render('worksiteAdd', {
-				title: '工作地点更新页 > ' + worksite.addr,
+				title: '地点更新 > ' + worksite.addr,
 				worksiteArr: ['上海', '苏州', '南京', '杭州', '无锡', '广州', '北京', '武汉', '重庆'],
 				worksite: worksite
 			})

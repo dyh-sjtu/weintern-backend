@@ -22,7 +22,10 @@ let UserSchema = new mongoose.Schema({
 		type: String,
 		default: '男'
 	},
-	img: String,
+	img: {
+		type: String,
+		default: 'headpic.png'
+	},
 	email: String,
 	tel: Number,
 	firstSave: {
