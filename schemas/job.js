@@ -2,9 +2,10 @@ let mongoose = require('mongoose');
 let ObjectId = mongoose.Schema.Types.ObjectId;
 let JobSchema = new mongoose.Schema({
 	jobname: String,   // 实习标题,
-	company:String,
-	companyUrl: String,
-	image: {  // 企业的log，如果没有，则使用默认的图标
+	company:String,   // 公司名称
+	companyUrl: String,  // 公司主页
+	companyAddr: String,  // 公司地址
+	image: {   // 企业的log，如果没有，则使用默认的图标
 		type: String,
 		default: 'weintern.png'
 	},

@@ -1,7 +1,18 @@
 .container
 	.row
-		.col-md-4
+		.col-md-2
 			h3(style="margin-top:15px;") #{title}
+		if title=="首页"
+			.col-md-2
+				span.btn-group.pull-right(style="margin-top:10px")
+					button.btn.btn-success.dropdown-toggle(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="false") 类型划分
+						span.caret
+						span.sr-only
+					ul.dropdown-menu
+						li
+							a(href="?type=category") 按岗位类型
+						li
+							a(href="?type=worksite") 按工作地点
 		if title=="首页"
 			.col-md-4
 				form#form-search(action="/weintern/search",method="post",onSubmit="return false")
@@ -12,8 +23,8 @@
 		.col-md-4.pull-right
 			if user
 				h5.text-right(style="display:flex;align-items:center")
-					span(style="white-space:nowrap") 欢迎您，
-					a(href="/weintern/user/center?userId=#{user._id}",style="color:#337ab7;font-style:normal;margin-right:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;") &nbsp;#{user.name}
+					span.weintern-font-larger(style="white-space:nowrap") 欢迎您，
+					a.weintern-font-large(href="/weintern/user/center?userId=#{user._id}",style="color:#337ab7;font-style:normal;margin-right:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;") &nbsp;#{user.name}
 					span.dropdown(style="display: inline-block;")
 						button.btn.btn-primary.dropdown-toggle(id="dLable",type="button",data-toggle="dropdown",aria-haspopup="true",aria-expanded="false") 后台管理
 							span.caret

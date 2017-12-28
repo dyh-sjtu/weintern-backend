@@ -38,6 +38,7 @@ router.get('/weintern/job/add', Auth.requiredAdmin, (req, res) => {
 					jobname: '',
 					company: '',
 					companyUrl: '',
+					companyAddr: '',
 					salary: '',
 					desc: '',
 					jobcontent: '',
@@ -109,8 +110,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 						}
 					});
 					// 删除当前行业类别下的岗位
-					Category.findOne({"jobs": job._id}, (err, category) => {
-						console.log(category);
+					Category.findOne({"jobs": id}, (err, category) => {
 						if (category.jobs && category.jobs.length > 0) {
 							category.jobs.forEach((e, i) => {
 								if (e.toString() === job._id.toString()) {
@@ -127,7 +127,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 						}
 					})
 				});
-				// 更新行业类别下的岗位
+				// 更新地点类别下的岗位
 				Worksite.findById(job.worksite, (err, worksite) => {
 					if (worksite.jobs.indexOf(job._id) > -1) {
 						return
@@ -139,7 +139,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 							console.log(err);
 						}
 					});
-					// 删除当前行业类别下的岗位
+					// 删除当前地点类别下的岗位
 					Worksite.findOne({"jobs": job._id}, (err, worksite) => {
 						if (worksite.jobs.length > 0) {
 							worksite.jobs.forEach((e, i) => {
@@ -163,12 +163,22 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 	} else {
 		_job = new Job(jobObj);
 		let worksiteId = jobObj.worksite;
-		if (worksiteId) {
+		let categoryId = jobObj.category;
+		if (worksiteId && categoryId) {
 			_job.save((err, job) => {
 				if (err) {
 					console.log(err)
 				}
 				// 保存行业类别下的岗位
+				Category.findById(categoryId, (err, category) => {
+					category.jobs.push(_job.id);
+					category.save((err, category) => {
+						if (err) {
+							console.log(err)
+						}
+					})
+				})
+				// 保存工作地点类别下的岗位
 				Worksite.findById(worksiteId, (err, worksite) => {
 					worksite.jobs.push(_job.id);
 					worksite.save((err, worksite) => {
@@ -188,7 +198,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 });
 
 // 删除实习岗位
-router.delete('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
+router.delete('/weintern/job/list/del', Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		Category.findOne({"jobs": id}, (err, category) => {

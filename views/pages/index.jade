@@ -3,19 +3,39 @@ block content
 	.container
 		.row
 			.col-md-12
-				each cat in categories
-					if cat.jobs && cat.jobs.length > 0
-						.panel.panel-default
-							.panel-heading.clearfix(style="position:relative")
-								h3 #{cat.name}
-								if cat.jobs && cat.jobs.length >= 4
-									a(href="/weintern/job/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
-							.panel-body
-								.row
-									each item in cat.jobs
-										.col-md-3
-											.thumbnail
-												a(href="/weintern/job/detail/" + item._id)
-												.caption
-													h5=item.jobname
-													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}",role="button") 查看岗位详情
+				if categories
+					each cat in categories
+						if cat.jobs && cat.jobs.length > 0
+							.panel.panel-default
+								.panel-heading.clearfix(style="position:relative")
+									h3 #{cat.name}
+									if cat.jobs && cat.jobs.length >= 4
+										a(href="/weintern/job/category/result?cat=#{cat._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
+								.panel-body
+									.row
+										each item in cat.jobs
+											.col-md-3
+												.thumbnail
+													a(href="/weintern/job/detail/" + item._id)
+														img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
+													.caption
+														h5 #{item.jobname}
+														a.btn.btn-primary(href="/weintern/job/detail/#{item._id}",role="button") 查看岗位详情
+				if worksites
+					each worksite in worksites
+						if worksite.jobs && worksite.jobs.length > 0
+							.panel.panel-default
+								.panel-heading.clearfix(style="position:relative")
+									h3 #{worksite.addr}
+									if worksite.jobs && worksite.jobs.length >= 4
+										a(href="/weintern/job/worksite/result?cat=#{worksite._id}&pageSize=1",style="position: absolute;right: 15px;top:35px;font-size:14px;") MORE >>
+								.panel-body
+									.row
+										each item in worksite.jobs
+											.col-md-3
+												.thumbnail
+													a(href="/weintern/job/detail/" + item._id)
+														img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
+													.caption
+														h5 #{item.jobname}
+														a.btn.btn-primary(href="/weintern/job/detail/#{item._id}",role="button") 查看岗位详情

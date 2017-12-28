@@ -4,20 +4,20 @@ block content
 		.row
 			.col-md-12
 				.panel.panel-default
-					each site in worksites
+					each worksite in worksites
 						.panel-heading
-							h3 #{site.addr}
+							h3 #{worksite.addr}
 						.panel-body
-							if site.jobs && site.jobs.length > 0
+							if worksite.jobs && worksite.jobs.length > 0
 								.row
-									each item,index in site.jobs
+									each item, index in worksite.jobs
 										.col-md-3
 											.thumbnail
-												a(href="/weintern/job/detail/"+item._id)
-													img(src="/uploads/#{item.image}",alt="#{item.company}",style="height:350px;")
+												a(href="/weintern/job/detail/" + item._id)
+													img(src="/uploads/#{item.image}", alt="#{item.company}", style="height:350px;")
 												.caption
 													h5 #{item.company}
-													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}",role="button") 观看预告片
+													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
 								nav(style="text-align: center")
 									ul.pagination.pagination-lg(style="margin:10px 0")
 										if pageSize-1 <= 0
@@ -41,3 +41,6 @@ block content
 										else
 											li.next
 												a(href='/weintern/job/worksite/result?site=#{worksiteId}&pageSize=#{pageSize+1}') »
+									.col-sm-offset-11
+										a(href="/")
+											button.btn.btn-primary(type="button") 返回首页

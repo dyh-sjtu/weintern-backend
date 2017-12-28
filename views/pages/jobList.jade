@@ -30,6 +30,38 @@ block content
 								td(style="vertical-align: middle;text-align:center;") #{item.pv}
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/detail/#{item._id}") 查看
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/update/#{item._id}") 修改
-								td(style="vertical-align: middle;text-align:center;") 
-									button.btn.btn-danger.del(type="button",data-id="#{item._id}",onclick="del(this,'/weintern/job/list')") 删除
-	script(src="/js/admin.js")
+								td(style="vertical-align: middle;text-align:center;")
+									button.btn.btn-danger.del(type="button", data-id="#{item._id}", data-toggle="modal") 删除
+	#del-modal.modal.fade
+		.modal-dialog
+			.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
+				.modal-header
+					h4.modal-title 提示
+				.modal-body
+					h4(style="color:#c9302c") 确定删除该用户吗？删除后该用户下数据也被删除!
+				.modal-footer
+					button.btn.btn-default(type="button",data-dismiss="modal") 取消
+					button.btn.btn-success(type="button") 确定
+	script.
+		var jobId = null;
+		var tr = null;
+		$(".del").click(function () {
+			$("#del-modal").modal();
+			jobId = $(this).data("id");
+			tr = $(this).parents("tr");
+		})
+		$(".btn-success").click(function () {
+			if (jobId) {
+				$.ajax({
+					type: 'DELETE',
+					url: '/weintern/job/list/del' + "?id=" + jobId
+				}).done(function (res) {
+					if (res.success == 1) {
+						if (tr.length > 0) {
+							tr.remove();
+						}
+					}
+				})
+			}
+			$("#del-modal").modal('hide');
+		})
