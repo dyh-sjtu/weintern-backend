@@ -141,18 +141,29 @@ router.get('/weintern/search', (req, res) => {
 	let totalSize = 0;
 	Job.find({jobname: reg}, (err, jobs) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
-			Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek internMonth canBeRegular").exec((err, categories) => {
-				categories.forEach((item, index) => {
-					totalSize += item.jobs.length;
-				});
-				res.render('search', {
-					title: '搜索页',
-					categories: categories,
-					number: totalSize,
-					// pageSize: Math.ceil(totalSize/size),
-					keywords: q,
-				})
-			})
+			Job.find({company:reg}, (err, _jobs) => {
+				if (_jobs.length <= 0) {
+					Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek internMonth canBeRegular").exec((err, categories) => {
+						categories.forEach((item, index) => {
+							totalSize += item.jobs.length;
+						});
+						res.render('search', {
+							title: '搜索页',
+							categories: categories,
+							number: totalSize,
+							// pageSize: Math.ceil(totalSize/size),
+							keywords: q,
+						})
+					})
+				}else {
+					res.render('search', {
+						title: '搜索页',
+						jobs: _jobs,
+						number: _jobs.length,
+						keywords: q
+					})
+				}
+			});
 		} else {
 			res.render('search', {
 				title: '搜索页',
