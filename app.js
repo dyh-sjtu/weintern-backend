@@ -123,9 +123,8 @@ app.use('/', worksiteManage);
 // 实习类别管理
 app.use('/', categoryMange);
 
-// 实习岗位api
-
-app.use('/', api);
+// 小程序的api接口
+app.use('/api', api);
 
 
 // status:success || fail 错误提示路由

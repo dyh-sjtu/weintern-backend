@@ -1,12 +1,17 @@
 let express = require('express');
-let router = express.Router();
+let router = express.Router({
+
+});
 let Category = require('../../models/category');
 
-router.get('/api/categories', (req, res) => {
+router.get('/job/categories', (req, res) => {
 	Category.find({})
 		.populate("jobs", "jobname company")
 		.exec((err, categories) => {
-			res.json(categories);
+			return res.json({
+				success:1,
+				data: categories
+			});
 		})
 });
 
