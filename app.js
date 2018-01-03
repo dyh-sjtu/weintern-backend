@@ -27,6 +27,8 @@ let jobManage = require('./routes/job/job');
 let worksiteManage = require('./routes/job/worksite');
 // 实习行业类别管理
 let categoryMange = require('./routes/job/category');
+// 实习岗位api
+let api = require('./routes/api/categories');
 
 // 用户相关
 // 用户登录注册
@@ -120,6 +122,10 @@ app.use('/', jobManage);
 app.use('/', worksiteManage);
 // 实习类别管理
 app.use('/', categoryMange);
+
+// 实习岗位api
+
+app.use('/', api);
 
 
 // status:success || fail 错误提示路由
