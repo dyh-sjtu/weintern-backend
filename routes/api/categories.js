@@ -4,6 +4,7 @@ let config = require('../../config/config');
 let Category = require('../../models/category');
 
 router.get('/', (req, res) => {
+	console.log('路由在这里');
 	let echostr, nonce, signature, timestamp;
 	signature = req.query.signature;
 	timestamp = req.query.timestamp;
