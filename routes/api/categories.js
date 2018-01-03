@@ -10,8 +10,10 @@ router.get('/', (req, res) => {
 	nonce = req.query.nonce;
 	echostr = req.query.echostr;
 	if (checkToken(timestamp, nonce, signature, config.wechat.token)) {
+		console.log("比对成功");
 		return res.send(echostr);
 	} else {
+		console.log('比对失败');
 		return res.end();
 	}
 });
