@@ -1,7 +1,5 @@
 let express = require('express');
-let router = express.Router({
-
-});
+let router = express.Router();
 let Category = require('../../models/category');
 
 router.get('/job/categories', (req, res) => {
