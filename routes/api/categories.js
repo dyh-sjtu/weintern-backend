@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 	}
 });
 
-router.get('/job/categories', (req, res) => {
+router.get('/api/job/categories', (req, res) => {
 	Category.find({})
 		.populate("jobs", "jobname company")
 		.exec((err, categories) => {

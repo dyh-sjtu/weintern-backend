@@ -124,7 +124,7 @@ app.use('/', worksiteManage);
 app.use('/', categoryMange);
 
 // 小程序的api接口
-app.use('/api', api);
+app.use('/', api);
 
 
 // status:success || fail 错误提示路由
