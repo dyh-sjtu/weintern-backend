@@ -9,6 +9,7 @@ router.get('/', (req, res) => {
 	timestamp = req.query.timestamp;
 	nonce = req.query.nonce;
 	echostr = req.query.echostr;
+	console.log(signature + ";" + timestamp + ";" + echostr + ":" + nonce);
 	if (checkToken(timestamp, nonce, signature, config.wechat.token)) {
 		console.log("比对成功");
 		return res.send(echostr);
@@ -31,9 +32,13 @@ router.get('/job/categories', (req, res) => {
 
 function checkToken(timestamp, nonce, signature, token) {
 	let currSign, tmp;
-	tmp = [token, timestamp, nonce].sort().join("");
-	currSign = crypto.createHash("sha1").update(tmp).digest("hex");
-	return currSign === signature;
+	tmp = [token, timestamp, nonce];
+	tmp.sort();
+	tmp.join('');
+	let shasum = crypto.createHash('sha1');
+	shasum.update(tmp);
+	currSign = shasum.digest("hex");
+	return currSign == signature;
 }
 
 module.exports = router;
