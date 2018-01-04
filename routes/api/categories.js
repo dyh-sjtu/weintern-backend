@@ -1,5 +1,6 @@
 let express = require('express');
 let router = express.Router();
+let crypto = require('crypto');
 let config = require('../../config/config');
 let Category = require('../../models/category');
 
