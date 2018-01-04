@@ -38,7 +38,7 @@ function checkToken(timestamp, nonce, signature, token) {
 	tmp.join('').toString();
 	let shasum = crypto.createHash('sha1');
 	shasum.update(tmp);
-	currSign = shasum.digest("hex");
+	currSign = shasum.toString().digest("hex");
 	return currSign == signature;
 }
 
