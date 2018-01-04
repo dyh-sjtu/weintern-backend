@@ -32,7 +32,9 @@ router.get('/job/categories', (req, res) => {
 });
 
 router.get('/job', (req, res) => {
-	Job.fetch((err, jobs) => {
+	Job.find({})
+		.populate('worksite', "addr")
+		.exec((err, jobs) => {
 		if (err) {
 			return res.json({
 				success: 0,
