@@ -9,7 +9,6 @@ let Worksite = require('../../models/worksite');
 // 首页
 router.get('/', (req, res) => {
 	let type = req.query.type;
-	console.log(type);
 	if (type && type == "worksite") {
 		Worksite.find({})
 			.populate({path: "jobs", options: {limit: 5}})

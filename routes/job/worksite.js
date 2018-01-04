@@ -5,10 +5,9 @@ let Job = require('../../models/job');
 
 // 用户首先需要登录权限的中间件
 let Auth = require('../middleware/auth');
-router.use(Auth.requiredLogin);
 
 // 获取薪资录入页
-router.get('/weintern/job/worksite/add', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/worksite/add',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	res.render('worksiteAdd', {
 		title: '地点分类录入',
 		worksiteArr: ['上海', '苏州', '南京', '杭州', '无锡', '广州', '北京', '武汉', '重庆'],
@@ -17,7 +16,7 @@ router.get('/weintern/job/worksite/add', Auth.requiredAdmin, (req, res) => {
 });
 
 // 保存工作地点
-router.post('/weintern/job/worksite/save', Auth.requiredAdmin, (req, res) => {
+router.post('/weintern/job/worksite/save',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	let worksiteObj = req.body.worksite;
 	let id = worksiteObj._id;
 	let addr = worksiteObj.addr;
@@ -43,7 +42,7 @@ router.post('/weintern/job/worksite/save', Auth.requiredAdmin, (req, res) => {
 });
 
 // 工作地点列表页
-router.get('/weintern/job/worksite/list', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/worksite/list',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	Worksite.fetch((err, worksites) => {
 		if (err) {
 			console.log(err)
@@ -57,7 +56,7 @@ router.get('/weintern/job/worksite/list', Auth.requiredAdmin, (req, res) => {
 });
 
 // 工作地点更新页
-router.get('/weintern/job/worksite/update/:id', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/worksite/update/:id',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	let id = req.params.id;
 	if (id) {
 		Worksite.findById(id, (err, worksite) => {
@@ -72,7 +71,7 @@ router.get('/weintern/job/worksite/update/:id', Auth.requiredAdmin, (req, res) =
 });
 
 // 工作地点删除
-router.delete('/weintern/job/worksite/del', Auth.requiredAdmin, (req, res) => {
+router.delete('/weintern/job/worksite/del',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		Job.find({worksite: id}, (err, jobs) => {  // 当删除某个工作地点类别时，应该删除该地点下的所有岗位

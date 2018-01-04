@@ -78,6 +78,7 @@ app.use(session({
 
 // 用于本地session临时存储的中间件使用
 app.use((req, res, next) => {
+	console.log('1111');
 	// console.log("user in session:"+req.session.user)
 	let _user = req.session.user;
 	if(_user){
@@ -124,7 +125,7 @@ app.use('/', worksiteManage);
 app.use('/', categoryMange);
 
 // 小程序的api接口
-app.use('/', api);
+app.use('/api', api);
 
 
 // status:success || fail 错误提示路由

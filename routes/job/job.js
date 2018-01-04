@@ -7,12 +7,10 @@ let Worksite = require('../../models/worksite');
 let SaveFile = require('../middleware/upload');
 // 权限中间件
 let Auth = require('../middleware/auth');
-// 没有挂载路径的中间件，应用的每个请求都会执行该中间件
-router.use(Auth.requiredLogin);
 
 // 挂载至 /xx/xx的中间件，任何指向 /xx/xx 的请求都会执行它
 // 获得实习岗位列表
-router.get('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/list', Auth.requiredLogin, Auth.requiredAdmin, (req, res) => {
 	Job.find({})
 		.populate("category", "name")
 		.populate("worksite", "addr")
@@ -29,7 +27,7 @@ router.get('/weintern/job/list', Auth.requiredAdmin, (req, res) => {
 });
 
 // 实习岗位录入页
-router.get('/weintern/job/add', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/add',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	Category.find({}, (err, categories) => {
 		Worksite.find({}, (err, worksites) => {
 			res.render('jobAdd', {
@@ -60,7 +58,7 @@ router.get('/weintern/job/add', Auth.requiredAdmin, (req, res) => {
 });
 
 // 更新实习岗位
-router.get('/weintern/job/update/:id', Auth.requiredAdmin, (req, res) => {
+router.get('/weintern/job/update/:id',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	let id = req.params.id;
 	if (id) {
 		Job.findById(id, (err, job) => {
@@ -79,7 +77,7 @@ router.get('/weintern/job/update/:id', Auth.requiredAdmin, (req, res) => {
 })
 
 // 保存实习岗位
-router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, res) => {
+router.post('/weintern/job/save',Auth.requiredLogin,  Auth.requiredAdmin, SaveFile.saveFile, (req, res) => {
 	let id = req.body.job._id;
 	let jobObj = req.body.job;
 	let _job;
@@ -200,7 +198,7 @@ router.post('/weintern/job/save', Auth.requiredAdmin, SaveFile.saveFile, (req, r
 });
 
 // 删除实习岗位
-router.delete('/weintern/job/list/del', Auth.requiredAdmin, (req, res) => {
+router.delete('/weintern/job/list/del',Auth.requiredLogin,  Auth.requiredAdmin, (req, res) => {
 	let id = req.query.id;
 	if (id) {
 		Category.findOne({"jobs": id}, (err, category) => {
@@ -228,7 +226,7 @@ router.delete('/weintern/job/list/del', Auth.requiredAdmin, (req, res) => {
 })
 
 // 保存对该实习岗位的评价
-router.post('/weintern/job/comment', (req, res) => {
+router.post('/weintern/job/comment', Auth.requiredLogin, (req, res) => {
 	let _comment = req.body.comment;
 	let comment = new Comment(_comment);
 	let jobId = _comment.job;
