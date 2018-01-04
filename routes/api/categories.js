@@ -3,6 +3,7 @@ let router = express.Router();
 let crypto = require('crypto');
 let config = require('../../config/config');
 let Category = require('../../models/category');
+let Job = require('../../models/job');
 
 router.get('/', (req, res) => {
 	let echostr, nonce, signature, timestamp;
@@ -21,13 +22,28 @@ router.get('/', (req, res) => {
 
 router.get('/job/categories', (req, res) => {
 	Category.find({})
-		.populate("jobs", "jobname company")
+		.populate("jobs", "jobname company salary worksite interweek image")
 		.exec((err, categories) => {
 			return res.json({
 				success:1,
 				data: categories
 			});
 		})
+});
+
+router.get('/job', (req, res) => {
+	Job.fetch((err, jobs) => {
+		if (err) {
+			return res.json({
+				success: 0,
+				data:{}
+			})
+		}
+		return res.json({
+			success: 1,
+			data: jobs
+		})
+	})
 });
 
 function checkToken(timestamp, nonce, signature, token) {
