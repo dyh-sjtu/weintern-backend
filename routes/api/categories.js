@@ -10,7 +10,6 @@ router.get('/', (req, res) => {
 	timestamp = req.query.timestamp.toString();
 	nonce = req.query.nonce.toString();
 	echostr = req.query.echostr.toString();
-	console.log(signature + ";" + timestamp + ";" + echostr + ";" + nonce);
 	if (checkToken(timestamp, nonce, signature, config.wechat.token.toString())) {
 		console.log("比对成功");
 		return res.send(echostr);
@@ -35,13 +34,9 @@ function checkToken(timestamp, nonce, signature, token) {
 	let currSign, tmp;
 	tmp = [token, timestamp, nonce];
 	tmp.sort();
-	tmp.join('').toString();
-	console.log(tmp);
-	console.log(tmp.join(''));
-	console.log(tmp.join('').toString());
 	let shasum = crypto.createHash('sha1');
-	shasum.update(tmp);
-	currSign = shasum.toString().digest("hex");
+	shasum.update(tmp.join('').toString());
+	currSign = shasum.digest("hex");
 	console.log(currSign);
 	console.log(signature);
 	return currSign == signature;
