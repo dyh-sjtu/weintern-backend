@@ -50,7 +50,7 @@ router.get('/job', (req, res) => {
 // 根据类别ID查找该类别下的
 router.post('/job/category', (req, res) => {
 	let categoryId = req.query.categoryId;
-	Job.find({category: categoryId})
+	Job.find({categoryId: categoryId})
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
