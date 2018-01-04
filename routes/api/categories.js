@@ -22,7 +22,6 @@ router.get('/', (req, res) => {
 
 router.get('/job/categories', (req, res) => {
 	Category.find({})
-		.populate("jobs", "jobname company salary worksite interweek image")
 		.exec((err, categories) => {
 			return res.json({
 				success:1,
@@ -46,6 +45,24 @@ router.get('/job', (req, res) => {
 			data: jobs
 		})
 	})
+});
+
+// 根据类别ID查找该类别下的
+router.post('/job/category', (req, res) => {
+	let categoryId = req.query.categoryId;
+	Job.find({category: categoryId})
+		.exec((err, jobs) => {
+			if (err) {
+				return res.json({
+					success:0,
+					data: {}
+				})
+			}
+			return res.json({
+				success: 1,
+				data: jobs
+			})
+		})
 });
 
 function checkToken(timestamp, nonce, signature, token) {
