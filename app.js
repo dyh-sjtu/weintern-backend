@@ -78,7 +78,6 @@ app.use(session({
 
 // 用于本地session临时存储的中间件使用
 app.use((req, res, next) => {
-	console.log('1111');
 	// console.log("user in session:"+req.session.user)
 	let _user = req.session.user;
 	if(_user){

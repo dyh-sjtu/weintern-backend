@@ -5,14 +5,13 @@ let config = require('../../config/config');
 let Category = require('../../models/category');
 
 router.get('/', (req, res) => {
-	console.log('1');
 	let echostr, nonce, signature, timestamp;
-	signature = req.query.signature;
-	timestamp = req.query.timestamp;
-	nonce = req.query.nonce;
-	echostr = req.query.echostr;
-	console.log(signature + ";" + timestamp + ";" + echostr + ":" + nonce);
-	if (checkToken(timestamp, nonce, signature, config.wechat.token)) {
+	signature = req.query.signature.toString();
+	timestamp = req.query.timestamp.toString();
+	nonce = req.query.nonce.toString();
+	echostr = req.query.echostr.toString();
+	console.log(signature + ";" + timestamp + ";" + echostr + ";" + nonce);
+	if (checkToken(timestamp, nonce, signature, config.wechat.token.toString())) {
 		console.log("比对成功");
 		return res.send(echostr);
 	} else {
@@ -36,7 +35,7 @@ function checkToken(timestamp, nonce, signature, token) {
 	let currSign, tmp;
 	tmp = [token, timestamp, nonce];
 	tmp.sort();
-	tmp.join('');
+	tmp.join('').toString();
 	let shasum = crypto.createHash('sha1');
 	shasum.update(tmp);
 	currSign = shasum.digest("hex");
