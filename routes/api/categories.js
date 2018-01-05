@@ -22,9 +22,16 @@ router.get('/', (req, res) => {
 
 router.get('/job/categories', (req, res) => {
 	Category.find({})
+		.sort({"meta.updateAt": -1})
 		.exec((err, categories) => {
+			if (err) {
+				return res.json({
+					success: 0,
+					data: {}
+				})
+			}
 			return res.json({
-				success:1,
+				success: 1,
 				data: categories
 			});
 		})
@@ -33,28 +40,30 @@ router.get('/job/categories', (req, res) => {
 router.get('/job', (req, res) => {
 	Job.find({})
 		.populate('worksite', "addr")
+		.sort({"meta.updateAt": -1})
 		.exec((err, jobs) => {
-		if (err) {
+			if (err) {
+				return res.json({
+					success: 0,
+					data: {}
+				})
+			}
 			return res.json({
-				success: 0,
-				data:{}
+				success: 1,
+				data: jobs
 			})
-		}
-		return res.json({
-			success: 1,
-			data: jobs
 		})
-	})
 });
 
 // 根据类别ID查找该类别下的
 router.get('/job/category', (req, res) => {
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
+		.sort({"meta.updateAt": -1})
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
-					success:0,
+					success: 0,
 					data: {}
 				})
 			}
