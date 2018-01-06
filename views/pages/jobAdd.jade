@@ -74,13 +74,13 @@ block content
 						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写
 				.form-group
 					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
-						strong(style="color:red;font-size:15px") &nbsp;* 必填,(范围请填写如3-6),仅填数字,默认为3
+						strong(style="color:red;font-size:15px") &nbsp;* 必填,分三种情况，仅限数字(1.填非0数字，如'3'; 2.范围,如 '3-6'; 3.不确定多少天，请填写'0')
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px;color:red")
 						input#inputInternWeek.form-control(type="text",placeholder="请填入一周实习天数要求",name="job[internWeek]",value="#{job.internWeek}")
 						span.input-group-addon 天/周
 				.form-group
 					label.col-sm-2.control-label(for="inputInterMonth") 实习月份
-						strong(style="color:red;font-size:15px") &nbsp;* 必填,(范围请填写如3-6),仅填数字,默认为3-6
+						strong(style="color:red;font-size:15px") &nbsp;* 必填, 分三种情况，仅限数字(1.填非0数字，如'3'; 2.范围,如 '3-6'; 3.不确定多少个月，请填写'0')
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputInterMonth.form-control(type="text",placeholder="请填入岗位实习持续月份要求",name="job[interMonth]",value="#{job.interMonth}")
 						span.input-group-addon 个月
