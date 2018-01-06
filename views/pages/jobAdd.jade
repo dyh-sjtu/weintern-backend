@@ -65,13 +65,13 @@ block content
 						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10(style="color:red")
 						textarea#inputJobcontent.form-control(cols="5", name="job[jobcontent]", placeholder="请填入岗位工作内容") #{job.jobcontent}
-						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写
+						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写, 没有的话填'面议'
 				.form-group
 					label.col-sm-2.control-label(for="inputSkill") 岗位技能要求
 						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10(style="color:red")
 						textarea#inputSkill.form-control(cols="5", name="job[skill]", placeholder="请填入岗位技能要求") #{job.skill}
-						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写
+						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写, 没有的话填'面议'
 				.form-group
 					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
 						strong(style="color:red;font-size:15px") &nbsp;* 必填,分三种情况，仅限数字(1.填非0数字，如'3'; 2.范围,如 '3-6'; 3.不确定多少天，请填写'0')
