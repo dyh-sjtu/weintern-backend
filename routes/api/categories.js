@@ -59,6 +59,7 @@ router.get('/job', (req, res) => {
 router.get('/job/category', (req, res) => {
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
+		.populate('worksite', 'addr')
 		.sort({"meta.updateAt": -1})
 		.exec((err, jobs) => {
 			if (err) {
