@@ -31,7 +31,7 @@ let JobSchema = new mongoose.Schema({
 		ref: 'Category'
 	},
 	deadline: Date, // 默认截至时期为当前录入时间往后推一个月
-	canBeRegular: Boolean, // 是否可转正
+	canBeRegular: String, // 是否可转正 // 是，否，不详
 	welfare: String,  // 职位福利
 	meta: {
 		createAt: {

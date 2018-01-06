@@ -48,7 +48,7 @@ router.get('/weintern/job/add',Auth.requiredLogin,  Auth.requiredAdmin, (req, re
 					note: '',
 					education: '本科',
 					email: '',
-					canBeRegular: false,
+					canBeRegular: '不详',
 					welfare: '',
 					deadline: parseInt(Date.now()) + 3*30 * 24 * 60 * 60 * 1000 // 默认截止时间为当前时间的三个月之后
 				}

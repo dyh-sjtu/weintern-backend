@@ -89,11 +89,14 @@ block content
 						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10
 						label.radio-inline
-							input(type="radio", value="是", name="job[canBeRegular]", checked=job.canBeRegular)
+							input(type="radio", value="是", name="job[canBeRegular]", checked=job.canBeRegular == "是")
 							| 是
 						label.radio-inline
-							input(type="radio", value="否", name="job[canBeRegular]", checked=!job.canBeRegular)
+							input(type="radio", value="否", name="job[canBeRegular]", checked=job.canBeRegular == '否')
 							| 否
+						label.radio-inline
+							input(type="radio", value="否", name="job[canBeRegular]", checked=job.canBeRegular == '不详')
+							| 不详
 				.form-group
 					label.col-sm-2.control-label(for="inputSalary") 实习薪资
 						strong(style="color:red;font-size:15px") &nbsp;* 必填,分四种情况(1.仅数字，如'100'; 2.范围,如 '100-200'; 3.薪资不限，填'不限'; 4. 没有薪资，免费劳动力, 填 '0')
