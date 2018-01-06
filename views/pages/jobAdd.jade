@@ -5,21 +5,32 @@ block content
 		.row
 			form.form-horizontal(method="post",action="/weintern/job/save", enctype="multipart/form-data")
 				.form-group
+					label.col-sm-2.control-label 录入说明
+					.col-sm-10
+						input.form-control(style="color:red", type="text", disabled="disabled", value="注意:左边带*的标签为必填项，即输入框里内容不能为空，请严格按照标签提示填写岗位详情")
+				.form-group
 					label.col-sm-2.control-label(for="inputCompanyUrl") 招聘公司主页地址
 					.col-sm-10
 						input#inputCompanyUrl.form-control(type="url",placeholder="请输入公司主页",name="job[companyUrl]", value='#{job.companyUrl}')
+						| 非必填，请填入公司的主页网址，可以自行百度
 				.form-group
 					label.col-sm-2.control-label(for="inputCompany") 招聘公司
-					.col-sm-10
+						strong(style="color:red;font-size:15px") &nbsp;*
+					.col-sm-10(style="color:red")
 						input#inputCompany.form-control(type="text",placeholder="请输入公司名称",name="job[company]", value='#{job.company}')
+						| 必填，填入公司名称
 				.form-group
-					label.col-sm-2.control-label(for="inputCompanyAddr") 公司地址
-					.col-sm-10
+					label.col-sm-2.control-label(for="inputCompanyAddr") 公司地址(工作地址）
+						strong(style="color:red;font-size:15px") &nbsp;*
+					.col-sm-10(style="color:red")
 						input#inputCompanyAddr.form-control(type="text", placeholder="请输入实习公司地址", name="job[companyAddr]", value="#{job.companyAddr}")
+						| 必填，请填入公司地址(工作地点), 没有可以自行百度
 				.form-group
 					label.col-sm-2.control-label(for="inputJobname") 职位名称
-					.col-sm-10
+						strong(style="color:red;font-size:15px") &nbsp;*
+					.col-sm-10(style="color:red")
 						input#inputJobname.form-control(type="text",placeholder="请输入职位名称",name="job[jobname]", value='#{job.jobname}')
+						| 必填，请填入职位名称
 				if job._id
 					input(type="hidden", name="job[_id]", value=job._id)
 				.form-group
@@ -48,28 +59,34 @@ block content
 					label.col-sm-2.control-label(for="inputDesc") 岗位简述
 					.col-sm-10
 						input#inputDesc.form-control(type="text",name="job[desc]",placeholder="请描述实习岗位及公司的简介", value="#{job.desc}")
+						| 非必填
 				.form-group
 					label.col-sm-2.control-label(for="inputJobcontent") 岗位职责
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10(style="color:red")
 						textarea#inputJobcontent.form-control(cols="5", name="job[jobcontent]", placeholder="请填入岗位工作内容") #{job.jobcontent}
-						| 以中文输入法下的分号隔开，形式为1.(内容1)；2.(内容2)；3.(内容3)
+						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写
 				.form-group
 					label.col-sm-2.control-label(for="inputSkill") 岗位技能要求
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10(style="color:red")
 						textarea#inputSkill.form-control(cols="5", name="job[skill]", placeholder="请填入岗位技能要求") #{job.skill}
-						| 以中文输入法分号隔开，形式为1.(内容1)；2.(内容2)；3.(内容3)
+						| 必填，分条描述，以"||"号隔开，形式为  1.(内容1)||2.(内容2)||3.(内容3),  请务必按此格式填写
 				.form-group
 					label.col-sm-2.control-label(for="inputInternWeek") 实习天数
-					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
+						strong(style="color:red;font-size:15px") &nbsp;* 必填,(范围请填写如3-6),仅填数字,默认为3
+					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px;color:red")
 						input#inputInternWeek.form-control(type="text",placeholder="请填入一周实习天数要求",name="job[internWeek]",value="#{job.internWeek}")
 						span.input-group-addon 天/周
 				.form-group
 					label.col-sm-2.control-label(for="inputInterMonth") 实习月份
+						strong(style="color:red;font-size:15px") &nbsp;* 必填,(范围请填写如3-6),仅填数字,默认为3-6
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputInterMonth.form-control(type="text",placeholder="请填入岗位实习持续月份要求",name="job[interMonth]",value="#{job.interMonth}")
 						span.input-group-addon 个月
 				.form-group
 					label.col-sm-2.control-label 是否可转正
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10
 						label.radio-inline
 							input(type="radio", value="是", name="job[canBeRegular]", checked=job.canBeRegular)
@@ -79,6 +96,7 @@ block content
 							| 否
 				.form-group
 					label.col-sm-2.control-label(for="inputSalary") 实习薪资
+						strong(style="color:red;font-size:15px") &nbsp;* 必填,分四种情况(1.仅数字，如'100'; 2.范围,如 '100-200'; 3.薪资不限，填'不限'; 4. 没有薪资，免费劳动力, 填 '0')
 					.col-sm-10.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputSalary.form-control(type="text", placeholder="请填写该岗位的实习工资", name="job[salary]", value="#{job.salary}")
 						span.input-group-addon 元/天
@@ -86,8 +104,10 @@ block content
 					label.col-sm-2.control-label(for="inputWelfare") 职位诱惑
 					.col-sm-10
 						input#inputWelfare.form-control(type="text", placeholder="请填写该岗位的职位福利", name="job[welfare]", value="#{job.welfare}")
+						| 非必填，没有就留空，不要填'无'！！！
 				.form-group
 					label.col-sm-2.control-label 学历要求
+						strong(style="color:red;font-size:15px") &nbsp;*
 					.col-sm-10
 						label.radio-inline
 							input(type="radio", name="job[education]", value="不限", checked=job.education == '不限')
@@ -99,14 +119,12 @@ block content
 							input(type="radio", name="job[education]", value="本科", checked=job.education == '本科')
 							| 本科
 						label.radio-inline
-							input(type="radio",name="job[education]", value="硕士", checked=job.education == '硕士')
-							| 硕士
-						label.radio-inline
-							input(type="radio",name="job[education]", value="博士", checked=job.education == '博士')
-							| 博士
+							input(type="radio",name="job[education]", value="硕士及以上", checked=job.education == '硕士及以上')
+							| 硕士及以上
 
 				.form-group
 					label.col-sm-2.control-label(for="UploadImage") 上传企业logo
+						strong(style="color:red;font-size:15px") &nbsp;* 必填
 					.col-sm-10
 						a.upload-file(href="javascript:;") 点击选择并上传文件
 							span.upload-message.pull-right
@@ -115,16 +133,20 @@ block content
 					label.col-sm-2.control-label(for="inputNote") 岗位备注
 					.col-sm-10
 						input#inputNote.form-control(type="text", name="job[note]", placeholder="其他信息统一填写在这里", value="#{job.note}")
+						| 非必填，没有就留空，不要填'无'！！！
 				.form-group
 					label.col-sm-2.control-label(for="inputDeadline") 截止时间
+						strong(style="color:red;font-size:15px") &nbsp;* 默认为当前时间向后延期三个月
 					#deadline_date.col-sm-10.date.input-group(style="padding-left:15px;padding-right:15px")
 						input#inputDeadline.form-control(type="text",name="job[deadline]", value="#{moment(job.deadline).format('YYYY-MM-DD')}")
 						span.input-group-addon
 							i.glyphicon.glyphicon-calendar
 				.form-group
 					label.col-sm-2.control-label(for="inputEmail") 投递邮箱
-					.col-sm-10
+						strong(style="color:red;font-size:15px") &nbsp;*
+					.col-sm-10(style="color:red")
 						input#inputEmail.form-control(type="email",placeholder="请输入投递邮箱",name="job[email]", value='#{job.email}')
+						| 必填,填写简历投递的邮箱
 				.form-group
 					.col-sm-offset-2.col-sm-10
 						button.btn.btn-primary(type="submit") 录入

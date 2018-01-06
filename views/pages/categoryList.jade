@@ -11,7 +11,8 @@ block content
 							th(style="text-align:center;") 合计
 							th(style="text-align:center;") 录入时间 
 							th(style="text-align:center;") 查看
-							th(style="text-align:center;") 更新 
+							th(style="text-align:center;") 更新
+							th(style="text-align:center;") 添加
 							th(style="text-align:center;") 删除
 					tbody
 						each item,index in categories
@@ -21,7 +22,8 @@ block content
 								td(style="vertical-align: middle;text-align:center;") #{item.jobs.length}
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/result?cat=#{item._id}&pageSize=1") 查看
-								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/update/#{item._id}") 修改
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/update/#{item._id}") 更新
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/category/add") 添加
 								td(style="vertical-align: middle;text-align:center;")
 									button.btn.btn-danger.del(type="button",data-id="#{item._id}",data-toggle="modal") 删除
 	#del-modal.modal.fade

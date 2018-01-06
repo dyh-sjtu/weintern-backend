@@ -12,6 +12,7 @@ block content
 							th(style="text-align:center;") 工作地点
 							th(style="text-align:center;") 投递邮箱
 							th(style="text-align:center;") 录入时间
+							th(style="text-align:center;") 更新时间
 							th(style="text-align:center;") 所属分类
 							th(style="text-align:center;") 访问统计
 							th(style="text-align:center;") 查看
@@ -21,11 +22,15 @@ block content
 						each item,index in jobs
 							tr(class="item-id-#{item._id}")
 								td(style="vertical-align: middle;text-align:center;") #{index+1}
-								td(style="vertical-align: middle;") #{item.jobname}
-								td(style="vertical-align: middle;") #{item.company}
+								td(style="vertical-align: middle;")
+									.text-over(style="width:180px") #{item.jobname}
+								td(style="vertical-align: middle;")
+									.text-over(style="width:100px") #{item.company}
 								td(style="vertical-align: middle;text-align:center;") #{item.worksite.addr}
-								td(style="vertical-align: middle;text-align:center;") #{item.email}
+								td(style="vertical-align: middle;")
+									.text-over(style="width:150px") #{item.email}
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
+								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.updateAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center;") #{item.category.name}
 								td(style="vertical-align: middle;text-align:center;") #{item.pv}
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/detail/#{item._id}") 查看

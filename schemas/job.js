@@ -10,9 +10,9 @@ let JobSchema = new mongoose.Schema({
 		default: 'weintern.png'
 	},
 	desc: String,   // 实习公司描述 || 职位诱惑
-	jobcontent: String,  // 工作内容
-	skill: String,  // 技能要求
-	salary: String,  // 薪资水平
+	jobcontent: Array,  // 工作内容
+	skill: Array,  // 技能要求
+	salary: String,  // 薪资水平  薪资为"" 代表薪资不限
 	worksite: {  // 实习地点
 		type: ObjectId,
 		ref: 'Worksite'
@@ -30,10 +30,7 @@ let JobSchema = new mongoose.Schema({
 		type: ObjectId,
 		ref: 'Category'
 	},
-	deadline: {  // 默认截至时期为当前录入时间往后推一个月
-		type: Date,
-		default: Date.now() + 30*24*60*60*1000
-	},
+	deadline: Date, // 默认截至时期为当前录入时间往后推一个月
 	canBeRegular: Boolean, // 是否可转正
 	welfare: String,  // 职位福利
 	meta: {

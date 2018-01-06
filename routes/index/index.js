@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
 	let type = req.query.type;
 	if (type && type == "worksite") {
 		Worksite.find({})
-			.populate({path: "jobs", options: {limit: 5}})
+			.populate({path: "jobs", options: {limit: 4}})
 			.exec((err, worksites) => {
 				if (err) {
 					console.log(err)
@@ -23,8 +23,8 @@ router.get('/', (req, res) => {
 				}
 			})
 	} else {
-		Category.find({}).limit(5)
-			.populate({path: "jobs", options: {limit: 5}})
+		Category.find({})
+			.populate({path: "jobs", options: {limit: 4}})
 			.exec((err, categories) => {
 				if (err) {
 					console.log(err)
@@ -48,16 +48,6 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 		if (err) console.log(err);
 	});
 	Job.findById(id, (err, job) => {
-		let jobcontentArr = [],
-			skillArr = [];
-		job.jobcontent.split('；').forEach((item, index) => {
-			if (item != "")
-			jobcontentArr.push(item);
-		});
-		job.skill.split('；').forEach((item, index) => {
-			if (item != "")
-				skillArr.push(item);
-		});
 		Category.findById(job.category, (err, category) => {
 			Worksite.findById(job.worksite, (err, worksite) => {
 				Comment.find({job: id})
@@ -67,8 +57,6 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 						res.render('jobDetail', {
 							title: '岗位详情页 ',
 							job: job,
-							jobcontentArr: jobcontentArr,
-							skillArr: skillArr,
 							category: category,
 							worksite: worksite,
 							comments: comments,
@@ -82,7 +70,7 @@ router.get('/weintern/job/detail/:id', (req, res) => {
 
 // 单个岗位类型分类下的岗位列表
 router.get('/weintern/job/category/result', (req, res) => {
-	let size = 4; // 一页8个
+	let size = 4; // 一页4个
 	let categoryId = req.query.cat;
 	let pageSize = parseInt(req.query.pageSize);
 	let totalSize = 0; // 一共有多少数据；   
@@ -92,12 +80,13 @@ router.get('/weintern/job/category/result', (req, res) => {
 		let page = Math.ceil(totalSize / size); //分多少页
 		Category.find({_id: categoryId})
 			.populate({path: "jobs", options: {limit: size, skip: (pageSize - 1) * size}})
-			.exec((err, categoris) => {
-				// console.log(categoris)
-				if (err) console.log(err);
+			.exec((err, categories) => {
+				if (err) {
+					console.log(err);
+				}
 				res.render('categoryResult', {
 					title: '当前行业类别',
-					categoris: categoris,
+					categories: categories,
 					page: page,
 					categoryId: categoryId,
 					pageSize: pageSize,
@@ -109,18 +98,21 @@ router.get('/weintern/job/category/result', (req, res) => {
 
 // 单个地点分类下的岗位列表
 router.get('/weintern/job/worksite/result', (req, res) => {
-	let size = 4; // 一页8个
+	let size = 4; // 一页4个
 	let worksiteId = req.query.site;
 	let pageSize = parseInt(req.query.pageSize);
 	let totalSize = 0; // 一共有多少数据；
 	res.locals.worksiteId = worksiteId;
 	Worksite.findById(worksiteId, (err, worksite) => {
 		totalSize = worksite.jobs.length;
+		console.log(totalSize);
 		let page = Math.ceil(totalSize / size); //分多少页
 		Worksite.find({_id: worksiteId})
 			.populate({path: "jobs", options: {limit: size, skip: (pageSize - 1) * size}})
 			.exec((err, worksites) => {
-				if (err) console.log(err);
+				if (err) {
+					console.log(err);
+				}
 				res.render('worksiteResult', {
 					title: '当前工作地点',
 					worksites: worksites,
@@ -141,7 +133,7 @@ router.get('/weintern/search', (req, res) => {
 	let totalSize = 0;
 	Job.find({jobname: reg}, (err, jobs) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
-			Job.find({company:reg}, (err, _jobs) => {
+			Job.find({company: reg}, (err, _jobs) => {
 				if (_jobs.length <= 0) {
 					Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek internMonth canBeRegular").exec((err, categories) => {
 						categories.forEach((item, index) => {
@@ -155,7 +147,7 @@ router.get('/weintern/search', (req, res) => {
 							keywords: q,
 						})
 					})
-				}else {
+				} else {
 					res.render('search', {
 						title: '搜索页',
 						jobs: _jobs,

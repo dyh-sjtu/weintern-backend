@@ -21,25 +21,35 @@ router.post('/weintern/job/category/save',Auth.requiredLogin,  Auth.requiredAdmi
 	let categoryObj = req.body.category;
 	let id = categoryObj._id;
 	let name = categoryObj.name;
-	if (id) {
-		Category.findById(id, (err, category) => {
-			category.name = name;
-			category.save((err, category) => {
-				if (err) {
-					console.log(err)
-				}
-				res.redirect('/weintern/job/category/list');
-			})
-		})
-	} else {
-		let category = new Category(categoryObj);
-		category.save((err, category) => {
-			if (err) {
-				console.log(err)
+	Category.find({name: name}, (err, category) => {
+		if (err) {
+			console.log(err)
+		}
+		if (category.length > 0) {
+			let msg = "您录入的岗位分类已经存在，请重新输入吧"
+			res.redirect(`/weintern/status?return_url=/weintern/job/category/add&code=0&tips=${msg}`);
+		}else {
+			if (id) {
+				Category.findById(id, (err, category) => {
+					category.name = name;
+					category.save((err, category) => {
+						if (err) {
+							console.log(err)
+						}
+						res.redirect('/weintern/job/category/list');
+					})
+				})
+			} else {
+				let category = new Category(categoryObj);
+				category.save((err, category) => {
+					if (err) {
+						console.log(err)
+					}
+					res.redirect('/weintern/job/category/list');
+				})
 			}
-			res.redirect('/weintern/job/category/list');
-		})
-	}
+		}
+	});
 });
 
 // 行业类别列表页

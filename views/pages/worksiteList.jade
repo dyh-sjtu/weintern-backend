@@ -12,6 +12,7 @@ block content
 							th(style="text-align:center;") 录入时间
 							th(style="text-align:center;") 查看
 							th(style="text-align:center;") 更新
+							th(style="text-align:center;") 添加地点
 							th(style="text-align:center;") 删除
 					tbody
 						each item,index in worksites
@@ -22,6 +23,7 @@ block content
 								td(style="vertical-align: middle;text-align:center;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/worksite/result?site=#{item._id}&pageSize=1") 查看
 								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/worksite/update/#{item._id}") 修改
+								td(style="vertical-align: middle;text-align:center;"): a(target="_blank",href="/weintern/job/worksite/add") 添加
 								td(style="vertical-align: middle;text-align:center;")
 									button.btn.btn-danger.del(type="button",data-id="#{item._id}",data-toggle="modal") 删除
 	#del-modal.modal.fade
@@ -43,7 +45,7 @@ block content
 			tr = $(this).parents("tr");
 		})
 		$(".btn-success").click(function () {
-			if (categoryId) {
+			if (worksiteId) {
 				$.ajax({
 					type: 'DELETE',
 					url: '/weintern/job/worksite/del' + "?id=" + worksiteId

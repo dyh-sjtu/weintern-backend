@@ -10,10 +10,10 @@ let UserSchema = new mongoose.Schema({
 		type: String,
 		unique: true
 	},
-	// role: 0 访客
-	// role: 1~10 普通用户
-	// role: 11~30 超级用户
-	// role: >31 超级管理员
+	// role: 0 访客 // 无权限删除用户
+	// role: 1~10 普通用户 // 无权限删除用户
+	// role: 11~30 超级用户 // 无权限删除用户
+	// role: >=31 超级管理员 // 有权限删除用户
 	role: {
 		type: Number,
 		default: 0

@@ -87,3 +87,9 @@
 .weintern-white-normal {
 	color: #F5F5F7;
 }
+
+.text-over{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}

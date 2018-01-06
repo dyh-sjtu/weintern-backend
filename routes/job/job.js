@@ -39,18 +39,18 @@ router.get('/weintern/job/add',Auth.requiredLogin,  Auth.requiredAdmin, (req, re
 					company: '',
 					companyUrl: '',
 					companyAddr: '',
-					salary: '',
+					salary: '100-200',
 					desc: '',
 					jobcontent: '',
 					skill: '',
-					internWeek: '3-5', // 默认为3-5天每周
-					interMonth: '6',   // 默认为6个月
+					internWeek: '3', // 默认为3天/周
+					interMonth: '3-6',   // 默认为3-6个月
 					note: '',
 					education: '本科',
 					email: '',
 					canBeRegular: false,
 					welfare: '',
-					deadline: parseInt(Date.now()) + 30 * 24 * 60 * 60 * 1000 // 默认截止时间为当前时间的一个月之后
+					deadline: parseInt(Date.now()) + 3*30 * 24 * 60 * 60 * 1000 // 默认截止时间为当前时间的三个月之后
 				}
 			})
 		})
@@ -62,6 +62,8 @@ router.get('/weintern/job/update/:id',Auth.requiredLogin,  Auth.requiredAdmin, (
 	let id = req.params.id;
 	if (id) {
 		Job.findById(id, (err, job) => {
+			job.jobcontent = job.jobcontent.join("||");
+			job.skill = job.skill.join("||");
 			Category.find({}, (err, categories) => {
 				Worksite.find({}, (err, worksites) => {
 					res.render('jobAdd', {
@@ -79,6 +81,14 @@ router.get('/weintern/job/update/:id',Auth.requiredLogin,  Auth.requiredAdmin, (
 // 保存实习岗位
 router.post('/weintern/job/save',Auth.requiredLogin,  Auth.requiredAdmin, SaveFile.saveFile, (req, res) => {
 	let id = req.body.job._id;
+	req.body.job.jobcontent = req.body.job.jobcontent.split('||');
+	req.body.job.jobcontent.filter((item) => {
+		return item.trim().length > 0
+	});
+	req.body.job.skill = req.body.job.skill.split('||');
+	req.body.job.skill.filter((item) => {
+		return item.trim().length > 0
+	});
 	let jobObj = req.body.job;
 	let _job;
 	

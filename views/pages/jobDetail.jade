@@ -9,9 +9,12 @@ block content
 					if job.salary == "不限"
 						span 薪资#{job.salary} |
 					else
-						span #{job.salary}/天 |
+						span ￥#{job.salary}/天 |
 					span  #{worksite.addr} |
-					span  #{job.education} |
+					if job.education == "不限"
+						span  学历#{job.education} |
+					else
+						span  #{job.education} |
 					span  #{job.internWeek}天/周 |
 					span  实习#{job.interMonth}个月 |
 					if job.canBeRegular
@@ -37,19 +40,22 @@ block content
 		.row
 			.col-md-7(style="margin-top:50px")
 				h2 职位描述
-				h2.weintern-font-larger.weintern-black-normal 工作内容:
-					.weintern-font-normal.weintern-gray-deep
-						each jobcontent in jobcontentArr
-							h6 #{jobcontent}；
-				.weintern-font-larger.weintern-black-normal(style="margin-top: 50px") 任职要求:
-					.weintern-font-normal.weintern-gray-deep
-						each skill in skillArr
-							h6 #{skill}；
+				if job.jobcontent.length > 0
+					h2.weintern-font-larger.weintern-black-normal 工作内容:
+						.weintern-font-normal.weintern-gray-deep
+							each item in job.jobcontent
+								h6 #{item}
+				if job.skill.length > 0
+					.weintern-font-larger.weintern-black-normal(style="margin-top: 50px") 任职要求:
+						.weintern-font-normal.weintern-gray-deep
+							each item in job.skill
+								h6 #{item}
 			.col-md-5(style="margin-top:50px")
 				h2 公司简介
-					h3.weintern-black-normal.weintern-font-larger 岗位描述:
-						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.desc}
-					h3.weintern-black-normal.weintern-font-larger 公司地址:
+					if job.desc
+						h3.weintern-black-normal.weintern-font-larger 岗位描述:
+							h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.desc}
+					h3.weintern-black-normal.weintern-font-larger 公司地址(工作地址):
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{job.companyAddr}
 					h3.weintern-black-normal.weintern-font-larger 投递邮箱地址:
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -59,8 +65,9 @@ block content
 						h4.weintern-gray-deep.weintern-font-large &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#{moment(job.deadline).format("YYYY-MM-DD")}
 		.row
 			.col-md-12
-				h2 岗位其他信息
-					h3.weintern-font-larger.weintern-gray-normal #{job.note}
+				if job.note
+					h2(style="margin-top: 50px") 岗位其他信息
+						h3.weintern-font-larger.weintern-gray-normal #{job.note}
 					hr
 		h2(style="padding-bottom:20px;border-bottom:1px solid #d9d9d9;") 评论
 			hr

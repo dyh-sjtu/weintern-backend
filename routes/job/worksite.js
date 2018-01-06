@@ -11,7 +11,7 @@ router.get('/weintern/job/worksite/add',Auth.requiredLogin,  Auth.requiredAdmin,
 	res.render('worksiteAdd', {
 		title: '地点分类录入',
 		worksiteArr: ['上海', '苏州', '南京', '杭州', '无锡', '广州', '北京', '武汉', '重庆'],
-		worksite: {},
+		worksite: { },
 	})
 });
 
@@ -20,25 +20,35 @@ router.post('/weintern/job/worksite/save',Auth.requiredLogin,  Auth.requiredAdmi
 	let worksiteObj = req.body.worksite;
 	let id = worksiteObj._id;
 	let addr = worksiteObj.addr;
-	if (id) {
-		Worksite.findById(id, (err, worksite) => {
-			worksite.addr = addr;
-			worksite.save((err, worksite) => {
-				if (err) {
-					console.log(err)
-				}
-				res.redirect('/weintern/job/worksite/list');
-			})
-		})
-	} else {
-		let worksite = new Worksite(worksiteObj);
-		worksite.save((err, worksite) => {
-			if (err) {
-				console.log(err)
+	Worksite.find({addr: addr}, (err, address) => {
+		if (err) {
+			console.log(err)
+		}
+		if (address.length > 0) {
+			let msg = "您新增的工作地点已经录入过了，请重新录入！";
+			res.redirect(`/weintern/status?return_url=/weintern/job/worksite/add&code=0&tips=${msg}`)
+		}else {
+			if (id) {
+				Worksite.findById(id, (err, worksite) => {
+					worksite.addr = addr;
+					worksite.save((err, worksite) => {
+						if (err) {
+							console.log(err)
+						}
+						res.redirect('/weintern/job/worksite/list');
+					})
+				})
+			} else {
+				let worksite = new Worksite(worksiteObj);
+				worksite.save((err, worksite) => {
+					if (err) {
+						console.log(err)
+					}
+					res.redirect('/weintern/job/worksite/list');
+				})
 			}
-			res.redirect('/weintern/job/worksite/list');
-		})
-	}
+		}
+	})
 });
 
 // 工作地点列表页

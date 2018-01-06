@@ -23,7 +23,7 @@ block content
 								td(style="vertical-align: middle;") #{item.img}
 								td(style="vertical-align: middle;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
 								td(style="vertical-align: middle;text-align:center")
-									button.btn.btn-danger.del(type="button", disabled=localUser._id.toString() === item._id.toString() || item.role > 30, data-id="#{item._id}",data-toggle="modal") 删除
+									button.btn.btn-danger.del(type="button", disabled=localUser._id.toString() === item._id.toString() || localUser.role <= 30 || item.role >= 31, data-id="#{item._id}",data-toggle="modal") 删除
 	#del-modal.modal.fade
 		.modal-dialog
 			.modal-container(style="background:#fff;border-radius: 6px;-webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);")
