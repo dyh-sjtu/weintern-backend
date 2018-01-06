@@ -127,6 +127,10 @@ router.get('/weintern/job/worksite/result', (req, res) => {
 
 // 实习搜索页面
 router.get('/weintern/search', (req, res) => {
+	let localUser;
+	if (req.session.user) {
+		localUser = req.session.user;
+	}
 	let q = req.query.query;
 	// let size = 4;
 	let reg = new RegExp(q + '.*', 'i');
@@ -142,6 +146,7 @@ router.get('/weintern/search', (req, res) => {
 						res.render('search', {
 							title: '搜索页',
 							categories: categories,
+							localUser: localUser,
 							number: totalSize,
 							// pageSize: Math.ceil(totalSize/size),
 							keywords: q,
@@ -150,6 +155,7 @@ router.get('/weintern/search', (req, res) => {
 				} else {
 					res.render('search', {
 						title: '搜索页',
+						localUser: localUser,
 						jobs: _jobs,
 						number: _jobs.length,
 						keywords: q
@@ -160,6 +166,7 @@ router.get('/weintern/search', (req, res) => {
 			res.render('search', {
 				title: '搜索页',
 				jobs: jobs,
+				localUser: localUser,
 				number: jobs.length,
 				keywords: q
 			})

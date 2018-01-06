@@ -81,6 +81,8 @@ router.get('/weintern/job/update/:id',Auth.requiredLogin,  Auth.requiredAdmin, (
 // 保存实习岗位
 router.post('/weintern/job/save',Auth.requiredLogin,  Auth.requiredAdmin, SaveFile.saveFile, (req, res) => {
 	let id = req.body.job._id;
+	
+	// 对岗位职责和内容进行组成数组，并将多余空白符删掉；
 	req.body.job.jobcontent = req.body.job.jobcontent.split('||');
 	req.body.job.jobcontent.filter((item) => {
 		return item.trim().length > 0
@@ -95,6 +97,7 @@ router.post('/weintern/job/save',Auth.requiredLogin,  Auth.requiredAdmin, SaveFi
 	req.body.job.skill.map((item) => {
 		return item.replace(/\s/g, '');
 	});
+	
 	let jobObj = req.body.job;
 	let _job;
 	

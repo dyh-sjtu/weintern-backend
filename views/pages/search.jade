@@ -40,7 +40,9 @@ block content
 														span  不可转正
 													else
 														span  转正面议
-												a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
+												a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 岗位详情
+												if localUser.role > 30
+													a.btn.btn-success.pull-right(href="/weintern/job/update/#{item._id}", style="margin-left:10px", role="button") 录入详情
 						if categories
 							.row
 								each cat in categories
