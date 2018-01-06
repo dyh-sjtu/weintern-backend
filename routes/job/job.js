@@ -86,14 +86,14 @@ router.post('/weintern/job/save',Auth.requiredLogin,  Auth.requiredAdmin, SaveFi
 		return item.trim().length > 0
 	});
 	req.body.job.jobcontent.map((item) => {
-		return item.trim();
+		return item.replace(/\s/g,'');
 	});
 	req.body.job.skill = req.body.job.skill.split('||');
 	req.body.job.skill.filter((item) => {
 		return item.trim().length > 0
 	});
 	req.body.job.skill.map((item) => {
-		return item.trim();
+		return item.replace(/\s/g, '');
 	});
 	let jobObj = req.body.job;
 	let _job;
