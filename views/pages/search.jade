@@ -21,14 +21,25 @@ block content
 											.caption
 												span.weintern-font-larger.weintern-black-deeper.text-over(style="width:50%") #{item.company}
 												span.weintern-font-larger.weintern-black-deeper.pull-right.text-over(style="width:50%") #{item.jobname}
-												if item.salary != "不限"
-													h5.weintern-gray-normal.text-over ￥#{item.salary}元/天 | #{item.internWeek}天/周 | #{item.interMonth}个月 |
-														if item.canBeRegular
-														|  可转正
-												else
-													h5.weintern-gray-normal.text-over 薪资#{item.salary} | #{item.internWeek}天/周 | #{item.interMonth}个月 |
-														if item.canBeRegular
-														|  可转正
+												h5.weintern-gray-normal.text-over
+													if item.salary != "不限"
+														span ￥#{item.salary}元/天 |
+													else
+														span 薪资#{item.salary} |
+													if item.internWeek != '0'
+														span  #{item.internWeek}天/周 |
+													else
+														span 实习天数面议 |
+													if item.interMonth != '0'
+														span  #{item.interMonth}个月 |
+													else
+														span  实习月份面议
+													if item.canBeRegular == "是"
+														span   可转正
+													else if item.canBeRegular == '否'
+														span  不可转正
+													else
+														span  转正面议
 												a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
 						if categories
 							.row
@@ -41,14 +52,25 @@ block content
 												.caption
 													span.weintern-font-larger.weintern-black-deeper.text-over(style="width:50%") #{item.company}
 													span.weintern-font-larger.weintern-black-deeper.pull-right.text-over(style="width:50%") #{item.jobname}
-													if item.salary != "不限"
-														h5.weintern-gray-normal.text-over ￥#{item.salary}元/天 | #{item.internWeek}天/周 | #{item.interMonth}个月 |
-															if item.canBeRegular
-															|  可转正
-													else
-														h5.weintern-gray-normal.text-over 薪资#{item.salary} | #{item.internWeek}天/周 | #{item.interMonth}个月 |
-															if item.canBeRegular
-															|  可转正
+													h5.weintern-gray-normal.text-over
+														if item.salary != "不限"
+															span ￥#{item.salary}元/天 |
+														else
+															span 薪资#{item.salary} |
+														if item.internWeek != '0'
+															span  #{item.internWeek}天/周 |
+														else
+															span  实习天数面议 |
+														if item.interMonth != '0'
+															span  #{item.interMonth}个月 |
+														else
+															span  实习月份面议
+														if item.canBeRegular == "是"
+															span  可转正
+														else if item.canBeRegular == '否'
+															span  不可转正
+														else
+															span  转正面议
 													a.btn.btn-primary(href="/weintern/job/detail/#{item._id}", role="button") 查看岗位详情
 							.row
 								.col-sm-2.col-sm-offset-10

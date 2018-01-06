@@ -15,10 +15,20 @@ block content
 						span  学历#{job.education} |
 					else
 						span  #{job.education} |
-					span  #{job.internWeek}天/周 |
-					span  实习#{job.interMonth}个月 |
-					if job.canBeRegular
-						span  提供转正机会
+					if job.internWeek != '0'
+						span  #{job.internWeek}天/周 |
+					else
+						span  实习天数面议
+					if job.interMonth != '0'
+						span  实习#{job.interMonth}个月 |
+					else
+						span  实习月份面议
+					if job.canBeRegular == '是'
+						span  可转正
+					else if job.canBeRegular == '否'
+						span  不可转正
+					else
+						span  转正面议
 				if job.welfare
 					h2.weintern-font-larger.weintern-gray-deeper 职位福利:  #{job.welfare}
 			.col-md-5
