@@ -20,9 +20,10 @@ router.get('/', (req, res) => {
 	}
 });
 
+// 查询所有岗位类别
 router.get('/job/categories', (req, res) => {
 	Category.find({})
-		.sort({"meta.updateAt": -1})
+		.sort({"meta.createAt": 1}) // 种类按升序排序，录入越早越在前面
 		.exec((err, categories) => {
 			if (err) {
 				return res.json({
@@ -37,10 +38,11 @@ router.get('/job/categories', (req, res) => {
 		})
 });
 
+// 首页查询所有岗位
 router.get('/job', (req, res) => {
 	Job.find({})
 		.populate('worksite', "addr")
-		.sort({"meta.updateAt": -1})
+		.sort({"meta.updateAt": -1})  // 按照岗位的更新时间降序排序
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
@@ -60,7 +62,7 @@ router.get('/job/category', (req, res) => {
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
 		.populate('worksite', 'addr')
-		.sort({"meta.updateAt": -1})
+		.sort({"meta.updateAt": -1}) // 按照岗位的更新时间降序排序
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
@@ -74,6 +76,7 @@ router.get('/job/category', (req, res) => {
 			})
 		})
 });
+
 
 function checkToken(timestamp, nonce, signature, token) {
 	let currSign, tmp;
