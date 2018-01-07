@@ -42,6 +42,7 @@ router.get('/job/categories', (req, res) => {
 router.get('/job', (req, res) => {
 	Job.find({})
 		.populate('worksite', "addr")
+		.populate('category', 'name')
 		.sort({"meta.updateAt": -1})  // 按照岗位的更新时间降序排序
 		.exec((err, jobs) => {
 			if (err) {
@@ -62,6 +63,7 @@ router.get('/job/category', (req, res) => {
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
 		.populate('worksite', 'addr')
+		.populate('category', 'name')
 		.sort({"meta.updateAt": -1}) // 按照岗位的更新时间降序排序
 		.exec((err, jobs) => {
 			if (err) {
@@ -81,13 +83,23 @@ router.get('/job/category', (req, res) => {
 router.get('/job/search', (req, res) => {
 	let query = req.query.searchType;
 	let reg = new RegExp(query + '.*', 'i');
-	Job.find({jobname: reg}, (err, jobs) => {
+	Job.find({jobname: reg})
+		.populate('worksite', 'addr')
+		.populate('category', 'name')
+		.sort({'meta.updateAt': -1})
+		.exec((err, jobs) => {
 		if (jobs.length <= 0) {
-			Job.find({company: reg}, (err, _jobs) => {
+			Job.find({company: reg})
+				.populate('worksite', 'addr')
+				.populate('category', 'name')
+				.sort({'meta.updateAt': -1})
+				.exec((err, _jobs) => {
 				if (_jobs.length <= 0) {
 					Category.find({name: reg})
 						.populate('jobs')
+						.sort({'meta.updateAt': -1})
 						.exec((err, category) => {
+							console.log(category)
 							if (err) {
 								return res.json({
 									success: 0,
@@ -106,6 +118,7 @@ router.get('/job/search', (req, res) => {
 							data: {}
 						})
 					}
+					console.log(_jobs)
 					return res.json({
 						success: 1,
 						data: _jobs
@@ -119,6 +132,7 @@ router.get('/job/search', (req, res) => {
 					data: {}
 				})
 			}
+			console.log(jobs)
 			return res.json({
 				success: 1,
 				data: jobs
