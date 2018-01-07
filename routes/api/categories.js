@@ -77,6 +77,56 @@ router.get('/job/category', (req, res) => {
 		})
 });
 
+// 根据关键字搜索
+router.get('/job/search', (req, res) => {
+	let query = req.query.searchType;
+	let reg = new RegExp(query + '.*', 'i');
+	Job.find({jobname: reg}, (err, jobs) => {
+		if (jobs.length <= 0) {
+			Job.find({company: reg}, (err, _jobs) => {
+				if (_jobs.length <= 0) {
+					Category.find({name: reg})
+						.populate('jobs')
+						.exec((err, category) => {
+							if (err) {
+								return res.json({
+									success: 0,
+									data: {}
+								})
+							}
+							return res.json({
+								success: 1,
+								data: category.jobs
+							})
+						})
+				} else {
+					if (err) {
+						return res.json({
+							success: 0,
+							data: {}
+						})
+					}
+					return res.json({
+						success: 1,
+						data: _jobs
+					})
+				}
+			})
+		} else {
+			if (err) {
+				return res.json({
+					success: 0,
+					data: {}
+				})
+			}
+			return res.json({
+				success: 1,
+				data: jobs
+			})
+		}
+	})
+});
+
 
 function checkToken(timestamp, nonce, signature, token) {
 	let currSign, tmp;
