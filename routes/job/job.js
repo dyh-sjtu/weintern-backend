@@ -44,7 +44,7 @@ router.get('/weintern/job/add',Auth.requiredLogin,  Auth.requiredAdmin, (req, re
 					jobcontent: '',
 					skill: '',
 					internWeek: '3', // 默认为3天/周
-					interMonth: '3-6',   // 默认为3-6个月
+					internMonth: '3-6',   // 默认为3-6个月
 					note: '',
 					education: '本科',
 					email: '',
