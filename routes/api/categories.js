@@ -39,7 +39,7 @@ router.get('/job/categories', (req, res) => {
 });
 
 // 首页查询所有岗位
-router.get('/job', (req, res) => {
+router.get('/jobs', (req, res) => {
 	Job.find({})
 		.populate('worksite', "addr")
 		.populate('category', 'name')
@@ -57,6 +57,27 @@ router.get('/job', (req, res) => {
 			})
 		})
 });
+
+// 根据jobID查找岗位详情
+router.get('/job', (req, res) => {
+	let jobId = req.query.jobId;
+	Job.findById(jobId)
+		.populate('worksite', 'addr')
+		.populate('category', 'name')
+		.exec((err, job) => {
+			if (err) {
+				res.json({
+					success: 0,
+					data: {}
+				})
+			}
+			res.json({
+				success: 1,
+				data: job
+			})
+		})
+})
+
 
 // 根据类别ID查找该类别下的
 router.get('/job/category', (req, res) => {
