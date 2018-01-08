@@ -61,7 +61,7 @@ router.get('/jobs', (req, res) => {
 // 根据jobID查找岗位详情
 router.get('/job', (req, res) => {
 	let jobId = req.query.jobId;
-	Job.findById(jobId)
+	Job.find({_id: jobId})
 		.populate('worksite', 'addr')
 		.populate('category', 'name')
 		.exec((err, job) => {
