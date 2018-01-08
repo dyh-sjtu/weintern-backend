@@ -139,7 +139,7 @@ router.get('/weintern/search', (req, res) => {
 		if (jobs.length <= 0) {  // 如果关键字搜索不到，改用行业类别搜
 			Job.find({company: reg}, (err, _jobs) => {
 				if (_jobs.length <= 0) {
-					Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek internMonth canBeRegular").exec((err, categories) => {
+					Category.find({name: reg}).populate("jobs", "jobname image company salary internWeek interMonth canBeRegular").exec((err, categories) => {
 						categories.forEach((item, index) => {
 							totalSize += item.jobs.length;
 						});

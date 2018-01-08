@@ -18,7 +18,7 @@ let JobSchema = new mongoose.Schema({
 		ref: 'Worksite'
 	},
 	internWeek:String,  // 实习时长，一周几天
-	internMonth: String,  // 实习时长，持续月份
+	interMonth: String,  // 实习时长，持续月份
 	education: String,  // 学历要求
 	email: String,   // 邮箱投递地址
 	note: String,  // 岗位备注
