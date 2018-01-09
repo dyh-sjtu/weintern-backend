@@ -28,7 +28,9 @@ let worksiteManage = require('./routes/job/worksite');
 // 实习行业类别管理
 let categoryMange = require('./routes/job/category');
 // 实习岗位api
-let api = require('./routes/api/categories');
+let wxJob = require('./routes/api/categories');
+let login = require('./routes/api/login');
+
 
 // 用户相关
 // 用户登录注册
@@ -124,7 +126,8 @@ app.use('/', worksiteManage);
 app.use('/', categoryMange);
 
 // 小程序的api接口
-app.use('/api', api);
+app.use('/api', wxJob);
+app.use('/api', login);
 
 
 // status:success || fail 错误提示路由
