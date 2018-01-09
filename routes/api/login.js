@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 let config = require('../../config/config');
+let request = require('request');
 
 router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
