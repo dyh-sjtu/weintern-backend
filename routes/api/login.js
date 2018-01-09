@@ -39,3 +39,5 @@ router.get('/wx/login', (req, res) => {
 		}
 	})
 });
+
+module.exports = router;
