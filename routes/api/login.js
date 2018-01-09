@@ -6,10 +6,10 @@ let request = require('request');
 router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
 	console.log(code);
-	console.log(config.appid);
-	console.log(config.secret);
+	console.log(config.wechat.appid);
+	console.log(config.wechat.secret);
 	request.get({
-		uri: `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appid}&secret=${config.secret}&js_code=${code}&grant_type=authorization_code`,
+		uri: `https://api.weixin.qq.com/sns/jscode2session?appid=${config.wechat.appid}&secret=${config.wechat.secret}&js_code=${code}&grant_type=authorization_code`,
 		json: true,
 	},(err, response, data) => {
 		if (response.statusCode === 200) {
