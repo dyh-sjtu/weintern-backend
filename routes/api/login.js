@@ -7,7 +7,7 @@ router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
 	console.log(code);
 	request.get({
-		uri: 'https://api.weixin.qq.com/sns/jscode2session',
+		url: 'https://api.weixin.qq.com/sns/jscode2session',
 		json: true,
 		qs: {
 			grant_type: 'authorization_code',
