@@ -6,15 +6,11 @@ let request = require('request');
 router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
 	console.log(code);
+	console.log(config.appid);
+	console.log(config.secret);
 	request.get({
-		url: 'https://api.weixin.qq.com/sns/jscode2session',
+		uri: `https://api.weixin.qq.com/sns/jscode2session?appid=${config.appid}&secret=${config.secret}&js_code=${code}&grant_type=authorization_code`,
 		json: true,
-		qs: {
-			grant_type: 'authorization_code',
-			appid: config.appid,
-			secret: config.secret,
-			js_code: code
-		}
 	},(err, response, data) => {
 		if (response.statusCode === 200) {
 			console.log("[openid]", data.openid);
