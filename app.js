@@ -29,7 +29,10 @@ let worksiteManage = require('./routes/job/worksite');
 let categoryMange = require('./routes/job/category');
 // 实习岗位api
 let wxJob = require('./routes/api/categories');
+// 微信授权登录的客户信息存储
 let login = require('./routes/api/login');
+// 微信用户的职位收藏、个人信息等
+let wechatUser = require('./routes/api/wechat-user');
 
 
 // 用户相关
@@ -128,6 +131,7 @@ app.use('/', categoryMange);
 // 小程序的api接口
 app.use('/api', wxJob);
 app.use('/api', login);
+app.use('/api', wechatUser);
 
 
 // status:success || fail 错误提示路由

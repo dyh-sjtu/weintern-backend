@@ -16,10 +16,10 @@ let WechatUserSchema = new mongoose.Schema({
 	feedback: String,
 	tel: String,
 	email: Number,
-	likes: {
+	likes: [{
 		type: ObjectId,
 		ref: 'Job'
-	},
+	}],
 	meta: {
 		createAt: {
 			type: Date,

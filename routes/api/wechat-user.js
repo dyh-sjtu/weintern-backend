@@ -1,0 +1,105 @@
+const express = require('express');
+const router = express.Router();
+const WechatUser = require('../../models/wechat-user');
+const Auth = require('../middleware/auth');
+const Job = require('../../models/job');
+
+// 保存或删除收藏
+router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
+	let openid = req.query.openid;
+	let favoriteId = req.query.favoriteId;
+	console.log(openid);
+	if (openid) {
+		WechatUser.findOne({username: openid})
+			.exec((err, user) => {
+				if (err) {
+					return res.json({
+						success: 0,
+						data: {}
+					})
+				}
+				if (user.likes.indexOf(favoriteId) > -1) {
+					let index = user.likes.indexOf(favoriteId);
+					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
+					// 删除岗位下收藏的人
+					Job.findById(favoriteId)
+						.exec((err, job) => {
+							if (job.beCollected.indexOf(user._id) > -1) {
+								let _index = job.beCollected.indexOf(user._id);
+								job.beCollected.splice(_index, 1);
+								job.save((err, job) => {
+									if (err) {
+										console.log(err);
+									}
+								})
+							}
+						});
+					user.save((err, user) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+					return res.json({
+						success: 1,
+						data: {
+							message: '删除成功',
+						}
+					})
+				} else {
+					user.likes.push(favoriteId);
+					// 添加岗位下的收藏者
+					Job.findById(favoriteId)
+						.exec((err, job) => {
+							if (err) {
+								console.log(err);
+							}
+							job.beCollected.push(user._id);
+							job.save((err, job) => {
+								if (err) {
+									console.log(err);
+								}
+							})
+						});
+					user.save((err, user) => {
+						if (err) {
+							console.log(err)
+						}
+					});
+					return res.json({
+						success: 1,
+						data: {
+							message: '收藏成功'
+						}
+					})
+				}
+			})
+	}
+});
+
+// 判断当前职位是否被该用户收藏
+router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
+	let favoriteId = req.query.favoriteId;
+	let openid = req.query.openid;
+	
+	WechatUser.findById(openid)
+		.exec((err, user) => {
+			if (err) {
+				cosnole.log(err)
+			}
+			if (user.likes.indexOf(favoriteId) > -1) {
+				return res.json({
+					success: 1,
+					data: {
+						isFavorite: true
+					}
+				})
+			}else {
+				return res.json({
+					success: 0,
+					data: {}
+				})
+			}
+		})
+});
+
+exports.router = router;

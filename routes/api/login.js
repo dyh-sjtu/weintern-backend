@@ -3,14 +3,10 @@ const router = express.Router();
 const WechatUser = require('../../models/wechat-user');
 let config = require('../../config/config');
 let request = require('request');
-let Auth = require('../middleware/auth');
 
 
 router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
-	console.log(code);
-	console.log(config.wechat.appid);
-	console.log(config.wechat.secret);
 	request.get({
 		uri: `https://api.weixin.qq.com/sns/jscode2session?appid=${config.wechat.appid}&secret=${config.wechat.secret}&js_code=${code}&grant_type=authorization_code`,
 		json: true,
@@ -28,7 +24,7 @@ router.get('/wx/login', (req, res) => {
 						if (err) {
 							console.log(err)
 						}
-						res.json({
+						return res.json({
 							success: 1,
 							data: {
 								sessionID: data.session_key,
@@ -46,7 +42,7 @@ router.get('/wx/login', (req, res) => {
 						if (err) {
 							console.log(err)
 						}
-						res.json({
+						return res.json({
 							success: 1,
 							data: {
 								sessionID: data.session_key,
@@ -58,7 +54,7 @@ router.get('/wx/login', (req, res) => {
 			})
 		} else {
 			console.log("[error]", err);
-			res.json({
+			return res.json({
 				success: 0,
 				data: {
 					err: err
