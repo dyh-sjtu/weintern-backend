@@ -18,8 +18,8 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 					})
 				}
 				if (!user.likes) {
-					user.likes = [];
-					user.likes.push(favoriteId);
+					// user.likes = [];
+					// user.likes.push(favoriteId);
 					// 添加岗位下的收藏者
 					Job.find({_id: favoriteId})
 						.exec((err, job) => {
@@ -34,9 +34,9 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 								}
 							})
 						});
-					user.save((err, user) => {
+					WechatUser.update({username: openid}, {likes:[favoriteId]}, (err, user) => {
 						if (err) {
-							console.log(err)
+							console.log(err);
 						}
 					});
 					return res.json({
