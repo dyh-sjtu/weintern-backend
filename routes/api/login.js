@@ -21,7 +21,7 @@ router.get('/wx/login', (req, res) => {
 				if (err) {
 					console.log(err)
 				}
-				if (wechatUser) {
+				if (wechatUser.length > 0) {
 					res.json({
 						success: 1,
 						data: {
