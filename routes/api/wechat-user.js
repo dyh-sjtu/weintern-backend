@@ -112,7 +112,12 @@ router.get('/wx/favoriteList', Auth.requiredOpenid, (req, res) => {
 	let openid = req.query.openid;
 	
 	WechatUser.findOne({username: openid})
-		.populate('likes')
+		.populate({
+			path: 'likes',
+			populate: {
+				path: 'worksite'
+			}
+		})
 		.exec((err, user) => {
 			if (err) {
 				console.log(err)
