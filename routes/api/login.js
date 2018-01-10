@@ -22,11 +22,8 @@ router.get('/wx/login', (req, res) => {
 					console.log(err)
 				}
 				if (wechatUser.length > 0) {
-					let _wechatUserObj = {
-						sessionKey: data.session_key
-					}
-					let _wechatUser = Object.assign(wechatUser, _wechatUserObj);
-					_wechatUser.save((err, wechatUser) => {
+					wechatUser.sessionKey = data.session_key;
+					wechatUser.save((err, wechatUser) => {
 						console.log(err);
 					});
 					res.json({
