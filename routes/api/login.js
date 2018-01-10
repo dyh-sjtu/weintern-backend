@@ -3,6 +3,8 @@ const router = express.Router();
 const WechatUser = require('../../models/wechat-user');
 let config = require('../../config/config');
 let request = require('request');
+let Auth = require('../middleware/auth');
+
 
 router.get('/wx/login', (req, res) => {
 	let code = req.query.code;
@@ -34,10 +36,6 @@ router.get('/wx/login', (req, res) => {
 							}
 						})
 					});
-					// wechatUser.sessionKey = data.session_key;
-					// wechatUser.save((err, wechatUser) => {
-					// 	console.log(err);
-					// });
 				} else {
 					let wechatUserObj = {
 						username: data.openid,

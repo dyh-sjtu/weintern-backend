@@ -4,6 +4,7 @@ let crypto = require('crypto');
 let config = require('../../config/config');
 let Category = require('../../models/category');
 let Job = require('../../models/job');
+let Auth = require('../middleware/auth');  // 微信需要授权登录小程序的中间件
 
 router.get('/', (req, res) => {
 	let echostr, nonce, signature, timestamp;
@@ -21,7 +22,7 @@ router.get('/', (req, res) => {
 });
 
 // 查询所有岗位类别
-router.get('/job/categories', (req, res) => {
+router.get('/job/categories', Auth.requiredOpenid, (req, res) => {
 	Category.find({})
 		.sort({"meta.createAt": 1}) // 种类按升序排序，录入越早越在前面
 		.exec((err, categories) => {
@@ -39,7 +40,7 @@ router.get('/job/categories', (req, res) => {
 });
 
 // 首页查询所有岗位
-router.get('/jobs', (req, res) => {
+router.get('/jobs', Auth.requiredOpenid, (req, res) => {
 	Job.find({})
 		.populate('worksite', "addr")
 		.populate('category', 'name')
@@ -59,7 +60,7 @@ router.get('/jobs', (req, res) => {
 });
 
 // 根据jobID查找岗位详情
-router.get('/job', (req, res) => {
+router.get('/job', Auth.requiredOpenid, (req, res) => {
 	let jobId = req.query.jobId;
 	Job.find({_id: jobId})
 		.populate('worksite', 'addr')
@@ -80,7 +81,7 @@ router.get('/job', (req, res) => {
 
 
 // 根据类别ID查找该类别下的
-router.get('/job/category', (req, res) => {
+router.get('/job/category', Auth.requiredOpenid, (req, res) => {
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
 		.populate('worksite', 'addr')
@@ -101,7 +102,7 @@ router.get('/job/category', (req, res) => {
 });
 
 // 根据关键字搜索
-router.get('/job/search', (req, res) => {
+router.get('/job/search', Auth.requiredOpenid, (req, res) => {
 	let query = req.query.searchType;
 	let reg = new RegExp(query + '.*', 'i');
 	Job.find({jobname: reg})

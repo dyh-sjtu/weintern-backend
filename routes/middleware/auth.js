@@ -17,3 +17,16 @@ exports.requiredAdmin = (req, res, next) => {
 	}
 	next();
 };
+
+exports.requiredOpenid = (req, res, next) => {
+	let openid = req.query.openid;
+	
+	if (!openid) {
+		res.json({
+			success: 0,
+			errMessage: '您没有授权, 请您删除微信首页的weintern小程序,并重新添加小程序'
+		})
+	}
+	
+	next();
+};
