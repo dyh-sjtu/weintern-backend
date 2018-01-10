@@ -36,7 +36,6 @@ router.get('/wx/login', (req, res) => {
 					let wechatUserObj = {
 						username: data.openid,
 						sessionKey: data.session_key,
-						likes: []
 					};
 					let _wechatUser = new WechatUser(wechatUserObj);
 					_wechatUser.save((err, wechatUser) => {
