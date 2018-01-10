@@ -5,11 +5,9 @@ const Auth = require('../middleware/auth');
 const Job = require('../../models/job');
 
 // 保存或删除收藏
-router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
-	console.log(req)
-	let openid = req.body.openid;
-	let favoriteId = req.body.favoriteId;
-	console.log(openid);
+router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
+	let openid = req.query.openid;
+	let favoriteId = req.query.favoriteId;
 	if (openid) {
 		WechatUser.find({username: openid})
 			.exec((err, user) => {

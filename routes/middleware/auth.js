@@ -19,8 +19,7 @@ exports.requiredAdmin = (req, res, next) => {
 };
 
 exports.requiredOpenid = (req, res, next) => {
-	console.log(req + ';;;;' + req.body);
-	let openid = req.body.openid;
+	let openid = req.query.openid;
 	if (!openid) {
 		return res.json({
 			success: 0,
