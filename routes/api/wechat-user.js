@@ -10,16 +10,14 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 	let favoriteId = req.query.favoriteId;
 	console.log(openid);
 	if (openid) {
-		WechatUser.findOne({username: openid}, (err, user) => {
+		WechatUser.findOne({username: openid}, (err, user) => {  // 注意find查找出来的是一个数组，findOne是一个对象。千万注意
 			if (err) {
 				return res.json({
 					success: 0,
 					data: {}
 				})
 			}
-			console.log(user.likes);
 			if (user.likes && user.likes.indexOf(favoriteId) > -1) {
-				console.log('2')
 				let index = user.likes.indexOf(favoriteId);
 				user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
 				console.log(index);
@@ -48,7 +46,6 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 					}
 				})
 			} else {
-				console.log('3')
 				user.likes.push(favoriteId);
 				// 添加岗位下的收藏者
 				Job.findOne({_id: favoriteId})
@@ -84,7 +81,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 	let favoriteId = req.query.favoriteId;
 	let openid = req.query.openid;
 	
-	WechatUser.find({username: openid}, (err, user) => {
+	WechatUser.findOne({username: openid}, (err, user) => {
 		if (err) {
 			console.log(err)
 		}
