@@ -22,7 +22,7 @@ router.get('/wx/login', (req, res) => {
 					console.log(err)
 				}
 				if (wechatUser.length > 0) {
-					WechatUser.update({name: data.openid}, {sessionKey:data.session_key}, (err) => {
+					WechatUser.update({username: data.openid}, {sessionKey:data.session_key}, (err) => {
 						if (err) {
 							console.log(err)
 						}
