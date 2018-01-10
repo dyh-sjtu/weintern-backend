@@ -15,7 +15,6 @@ let WechatUserSchema = new mongoose.Schema({
 	gender: Number,
 	feedback: String,
 	tel: String,
-	email: Number,
 	likes: [{
 		type: ObjectId,
 		ref: 'Job'

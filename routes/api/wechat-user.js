@@ -108,6 +108,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 	})
 });
 
+// 获得收藏列表
 router.get('/wx/favoriteList', Auth.requiredOpenid, (req, res) => {
 	let openid = req.query.openid;
 	
@@ -128,5 +129,102 @@ router.get('/wx/favoriteList', Auth.requiredOpenid, (req, res) => {
 			})
 		})
 });
+
+// 用户信息补充
+router.get('/wx/user/userInfo', Auth.requiredOpenid, (req, res) => {
+	let openid = req.query.openid;
+	let userObj = {
+		nickName: req.query.nickName,
+		gender: req.query.gender,
+		country: req.query.country,
+		city: req.query.city,
+		province: req.query.province,
+		avatarUrl: req.query.avatarUrl,
+	};
+	WechatUser.findOne({username: openid}, (err, user) => {
+		if (err) {
+			console.log(err);
+		}
+		if (user) {
+			let _userObj = Object.assign(user, userObj);
+			_userObj.save((err, _user) => {
+				if (err) {
+					console.log(err)
+				}
+				return res.json({
+					success: 1,
+					data: {
+						message: '信息添加成功'
+					}
+					
+				})
+			})
+		}
+	})
+});
+
+
+// 存储用户反馈
+router.get('/wx/user/feedback', Auth.requiredOpenid, (req, res) => {
+	let openid = req.query.openid;
+	let feedback = req.query.feedback;
+	
+	WechatUser.findOne({username: openid}, (err, user) => {
+		if (err) {
+			console.log(err);
+		}
+		if (user) {
+			user.feedback = user.feedback + feedback;
+			user.save((err, _user) => {
+				if (err) {
+					console.log(err)
+				}
+				return res.json({
+					success: 1
+				})
+			})
+		}
+	})
+});
+
+
+// 存储用户电话号码
+router.get('/wx/user/tel', Auth.requiredOpenid, (req, res) => {
+	let openid = req.query.openid;
+	let tel = parseInt(req.query.tel);
+	
+	WechatUser.findOne({username: openid}, (err, user) => {
+		if (err) {
+			console.log(err);
+		}
+		if (user) {
+			user.tel = tel;
+			user.save((err, _user) => {
+				if (err) {
+					console.log(err);
+				}
+				return res.json({
+					success: 1
+				})
+			})
+		}
+	})
+});
+
+// 获取用户信息
+router.get('/wx/user/getUserInfo', (req, res) => {
+	let openid = req.query.openid;
+	
+	WechatUser.findOne({username: openid}, (err, user) => {
+		if (err) {
+			console.log(err);
+		}
+		return res.json({
+			success: 1,
+			data: user
+		})
+	})
+});
+
 
 module.exports = router;
