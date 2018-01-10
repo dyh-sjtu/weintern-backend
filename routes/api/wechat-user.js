@@ -44,6 +44,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 				} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
 					let index = user.likes.indexOf(favoriteId);
 					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
+					console.log(index);
 					// 删除岗位下收藏的人
 					Job.find({_id: favoriteId})
 						.exec((err, job) => {
