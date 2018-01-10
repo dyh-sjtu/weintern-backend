@@ -17,6 +17,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 						data: {}
 					})
 				}
+				console.log(user.likes);
 				if (!user.likes) {
 					console.log('1')
 					// 添加岗位下的收藏者
