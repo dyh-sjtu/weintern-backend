@@ -102,4 +102,4 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 		})
 });
 
-exports.router = router;
+module.exports = router;
