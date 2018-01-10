@@ -6,8 +6,8 @@ const Job = require('../../models/job');
 
 // 保存或删除收藏
 router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
-	let openid = req.query.openid;
-	let favoriteId = req.query.favoriteId;
+	let openid = req.body.openid;
+	let favoriteId = req.body.favoriteId;
 	console.log(openid);
 	if (openid) {
 		WechatUser.find({username: openid})
