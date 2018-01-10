@@ -8,99 +8,99 @@ const Job = require('../../models/job');
 router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 	let openid = req.query.openid;
 	let favoriteId = req.query.favoriteId;
+	console.log(openid);
 	if (openid) {
-		WechatUser.find({username: openid})
-			.exec((err, user) => {
-				if (err) {
-					return res.json({
-						success: 0,
-						data: {}
-					})
-				}
-				console.log(user.likes);
-				if (!user.likes) {
-					console.log('1')
-					// 添加岗位下的收藏者
-					Job.find({_id: favoriteId})
-						.exec((err, job) => {
-							if (err) {
-								console.log(err);
-							}
-							Job.update({_id: favoriteId}, {beCollected: [user._id]}, (err, job) => {
-								if (err) {
-									console.log(err);
-								}
-							})
-						});
-					WechatUser.update({username: openid}, {likes:[favoriteId]}, (err, user) => {
+		WechatUser.find({username: openid}, (err, user) => {
+			if (err) {
+				return res.json({
+					success: 0,
+					data: {}
+				})
+			}
+			console.log(user.likes);
+			if (!user.likes) {
+				console.log('1')
+				// 添加岗位下的收藏者
+				Job.find({_id: favoriteId})
+					.exec((err, job) => {
 						if (err) {
 							console.log(err);
 						}
-					});
-					return res.json({
-						success: 1,
-						data: {
-							message: '收藏成功'
-						}
-					})
-				} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
-					console.log('2')
-					let index = user.likes.indexOf(favoriteId);
-					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
-					console.log(index);
-					// 删除岗位下收藏的人
-					Job.find({_id: favoriteId})
-						.exec((err, job) => {
-							if (job.beCollected.indexOf(user._id) > -1) {
-								let _index = job.beCollected.indexOf(user._id);
-								job.beCollected.splice(_index, 1);
-								job.save((err, job) => {
-									if (err) {
-										console.log(err);
-									}
-								})
-							}
-						});
-					user.save((err, user) => {
-						if (err) {
-							console.log(err);
-						}
-					});
-					return res.json({
-						success: 1,
-						data: {
-							message: '删除成功',
-						}
-					})
-				} else {
-					console.log('3')
-					user.likes.push(favoriteId);
-					// 添加岗位下的收藏者
-					Job.find({_id: favoriteId})
-						.exec((err, job) => {
+						Job.update({_id: favoriteId}, {beCollected: [user._id]}, (err, job) => {
 							if (err) {
 								console.log(err);
 							}
-							job.beCollected.push(user._id);
+						})
+					});
+				WechatUser.update({username: openid}, {likes: [favoriteId]}, (err, user) => {
+					if (err) {
+						console.log(err);
+					}
+				});
+				return res.json({
+					success: 1,
+					data: {
+						message: '收藏成功'
+					}
+				})
+			} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
+				console.log('2')
+				let index = user.likes.indexOf(favoriteId);
+				user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
+				console.log(index);
+				// 删除岗位下收藏的人
+				Job.find({_id: favoriteId})
+					.exec((err, job) => {
+						if (job.beCollected.indexOf(user._id) > -1) {
+							let _index = job.beCollected.indexOf(user._id);
+							job.beCollected.splice(_index, 1);
 							job.save((err, job) => {
 								if (err) {
 									console.log(err);
 								}
 							})
-						});
-					user.save((err, user) => {
-						if (err) {
-							console.log(err)
 						}
 					});
-					return res.json({
-						success: 1,
-						data: {
-							message: '收藏成功'
+				user.save((err, user) => {
+					if (err) {
+						console.log(err);
+					}
+				});
+				return res.json({
+					success: 1,
+					data: {
+						message: '删除成功',
+					}
+				})
+			} else {
+				console.log('3')
+				user.likes.push(favoriteId);
+				// 添加岗位下的收藏者
+				Job.find({_id: favoriteId})
+					.exec((err, job) => {
+						if (err) {
+							console.log(err);
 						}
-					})
-				}
-			})
+						job.beCollected.push(user._id);
+						job.save((err, job) => {
+							if (err) {
+								console.log(err);
+							}
+						})
+					});
+				user.save((err, user) => {
+					if (err) {
+						console.log(err)
+					}
+				});
+				return res.json({
+					success: 1,
+					data: {
+						message: '收藏成功'
+					}
+				})
+			}
+		})
 	}
 });
 
