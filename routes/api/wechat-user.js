@@ -10,7 +10,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 	let favoriteId = req.query.favoriteId;
 	console.log(openid);
 	if (openid) {
-		WechatUser.find({username: openid}, (err, user) => {
+		WechatUser.findOne({username: openid}, (err, user) => {
 			if (err) {
 				return res.json({
 					success: 0,
