@@ -119,9 +119,7 @@ router.get('/wx/favoriteList', Auth.requiredOpenid, (req, res) => {
 			}
 			return res.json({
 				success: 1,
-				data: {
-					jobs: user.likes
-				}
+				data: user.likes
 			})
 		})
 });
