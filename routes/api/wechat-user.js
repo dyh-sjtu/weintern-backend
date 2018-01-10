@@ -22,17 +22,18 @@ router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
 					let index = user.likes.indexOf(favoriteId);
 					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
 					// 删除岗位下收藏的人
-					Job.findById(favoriteId, (err, job) => {
-						if (job.beCollected.indexOf(user._id) > -1) {
-							let _index = job.beCollected.indexOf(user._id);
-							job.beCollected.splice(_index, 1);
-							job.save((err, job) => {
-								if (err) {
-									console.log(err);
-								}
-							})
-						}
-					});
+					Job.find({_id: favoriteId})
+						.exec((err, job) => {
+							if (job.beCollected.indexOf(user._id) > -1) {
+								let _index = job.beCollected.indexOf(user._id);
+								job.beCollected.splice(_index, 1);
+								job.save((err, job) => {
+									if (err) {
+										console.log(err);
+									}
+								})
+							}
+						});
 					user.save((err, user) => {
 						if (err) {
 							console.log(err);
@@ -47,17 +48,18 @@ router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
 				} else {
 					user.likes.push(favoriteId);
 					// 添加岗位下的收藏者
-					Job.findById(favoriteId, (err, job) => {
-						if (err) {
-							console.log(err);
-						}
-						job.beCollected.push(user._id);
-						job.save((err, job) => {
+					Job.find({_id: favoriteId})
+						.exec((err, job) => {
 							if (err) {
 								console.log(err);
 							}
-						})
-					});
+							job.beCollected.push(user._id);
+							job.save((err, job) => {
+								if (err) {
+									console.log(err);
+								}
+							})
+						});
 					user.save((err, user) => {
 						if (err) {
 							console.log(err)
@@ -79,7 +81,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 	let favoriteId = req.query.favoriteId;
 	let openid = req.query.openid;
 	
-	WechatUser.find({username:openid}, (err, user) => {
+	WechatUser.find({username: openid}, (err, user) => {
 		if (err) {
 			console.log(err)
 		}
