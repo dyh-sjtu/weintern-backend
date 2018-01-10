@@ -17,7 +17,35 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 						data: {}
 					})
 				}
-				if (user.likes && user.likes.indexOf(favoriteId) > -1) {
+				if (!user.likes) {
+					user.likes = [];
+					user.likes.push(favoriteId);
+					// 添加岗位下的收藏者
+					Job.find({_id: favoriteId})
+						.exec((err, job) => {
+							if (err) {
+								console.log(err);
+							}
+							job.beCollected = [];
+							job.beCollected.push(user._id);
+							job.save((err, job) => {
+								if (err) {
+									console.log(err);
+								}
+							})
+						});
+					user.save((err, user) => {
+						if (err) {
+							console.log(err)
+						}
+					});
+					return res.json({
+						success: 1,
+						data: {
+							message: '收藏成功'
+						}
+					})
+				} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
 					let index = user.likes.indexOf(favoriteId);
 					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
 					// 删除岗位下收藏的人
@@ -98,10 +126,10 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 					data: {}
 				})
 			}
-		}else {
+		} else {
 			return res.json({
 				success: 0,
-				data: { }
+				data: {}
 			})
 		}
 	})
