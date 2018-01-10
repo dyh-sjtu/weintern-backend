@@ -85,7 +85,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 		if (err) {
 			console.log(err)
 		}
-		if (user.likes.length > 0) {
+		if (user.likes && user.likes.length > 0) {
 			if (user.likes.indexOf(favoriteId) > -1) {
 				return res.json({
 					success: 1,
