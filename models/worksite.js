@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
-var WorksiteSchema = require('../schemas/worksite');
-var Worksite = mongoose.model('Worksite', WorksiteSchema);
+let mongoose = require('mongoose');
+let WorksiteSchema = require('../schemas/worksite');
+let Worksite = mongoose.model('Worksite', WorksiteSchema);
 module.exports = Worksite;

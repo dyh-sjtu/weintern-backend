@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
-var JobSchema = require('../schemas/job');
-var Job = mongoose.model('Job', JobSchema);
+let mongoose = require('mongoose');
+let JobSchema = require('../schemas/job');
+let Job = mongoose.model('Job', JobSchema);
 module.exports = Job;

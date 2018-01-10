@@ -33,6 +33,11 @@ let JobSchema = new mongoose.Schema({
 	deadline: Date, // 默认截至时期为当前录入时间往后推一个月
 	canBeRegular: String, // 是否可转正 // 是，否，不详
 	welfare: String,  // 职位福利
+	favorite: {  // 该岗位收藏的人数
+		type: ObjectId,
+		ref: 'WechatUser'
+	},
+	
 	meta: {
 		createAt: {
 			type: Date,
