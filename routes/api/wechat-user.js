@@ -174,7 +174,7 @@ router.get('/wx/user/feedback', Auth.requiredOpenid, (req, res) => {
 			console.log(err);
 		}
 		if (user) {
-			user.feedback = user.feedback + feedback;
+			user.feedback = feedback;
 			user.save((err, _user) => {
 				if (err) {
 					console.log(err)
