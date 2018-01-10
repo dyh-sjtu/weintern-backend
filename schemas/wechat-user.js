@@ -6,7 +6,6 @@ let WechatUserSchema = new mongoose.Schema({
 		type: String,
 		unique: true
 	},
-	session_key: String,
 	nickName: String,
 	country: String,
 	province: String,
