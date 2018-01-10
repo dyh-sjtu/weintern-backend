@@ -18,38 +18,13 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 				})
 			}
 			console.log(user.likes);
-			if (!user.likes) {
-				console.log('1')
-				// 添加岗位下的收藏者
-				Job.find({_id: favoriteId})
-					.exec((err, job) => {
-						if (err) {
-							console.log(err);
-						}
-						Job.update({_id: favoriteId}, {beCollected: [user._id]}, (err, job) => {
-							if (err) {
-								console.log(err);
-							}
-						})
-					});
-				WechatUser.update({username: openid}, {likes: [favoriteId]}, (err, user) => {
-					if (err) {
-						console.log(err);
-					}
-				});
-				return res.json({
-					success: 1,
-					data: {
-						message: '收藏成功'
-					}
-				})
-			} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
+			if (user.likes && user.likes.indexOf(favoriteId) > -1) {
 				console.log('2')
 				let index = user.likes.indexOf(favoriteId);
 				user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
 				console.log(index);
 				// 删除岗位下收藏的人
-				Job.find({_id: favoriteId})
+				Job.findOne({_id: favoriteId})
 					.exec((err, job) => {
 						if (job.beCollected.indexOf(user._id) > -1) {
 							let _index = job.beCollected.indexOf(user._id);
@@ -76,7 +51,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 				console.log('3')
 				user.likes.push(favoriteId);
 				// 添加岗位下的收藏者
-				Job.find({_id: favoriteId})
+				Job.findOne({_id: favoriteId})
 					.exec((err, job) => {
 						if (err) {
 							console.log(err);
