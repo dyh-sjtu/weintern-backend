@@ -18,6 +18,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 					})
 				}
 				if (!user.likes) {
+					console.log('1')
 					// 添加岗位下的收藏者
 					Job.find({_id: favoriteId})
 						.exec((err, job) => {
@@ -42,6 +43,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 						}
 					})
 				} else if (user.likes && user.likes.indexOf(favoriteId) > -1) {
+					console.log('2')
 					let index = user.likes.indexOf(favoriteId);
 					user.likes.splice(index, 1);  // 如果喜欢的岗位id存在，则表示需要删除收藏
 					console.log(index);
@@ -70,6 +72,7 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 						}
 					})
 				} else {
+					console.log('3')
 					user.likes.push(favoriteId);
 					// 添加岗位下的收藏者
 					Job.find({_id: favoriteId})
