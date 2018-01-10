@@ -6,6 +6,7 @@ const Job = require('../../models/job');
 
 // 保存或删除收藏
 router.post('/favorite/save', Auth.requiredOpenid, (req, res) => {
+	console.log(req)
 	let openid = req.body.openid;
 	let favoriteId = req.body.favoriteId;
 	console.log(openid);
