@@ -79,7 +79,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 	let favoriteId = req.query.favoriteId;
 	let openid = req.query.openid;
 	
-	WechatUser.findById(openid, (err, user) => {
+	WechatUser.find({username:openid}, (err, user) => {
 		if (err) {
 			console.log(err)
 		}
