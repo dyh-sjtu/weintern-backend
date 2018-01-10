@@ -22,18 +22,22 @@ router.get('/wx/login', (req, res) => {
 					console.log(err)
 				}
 				if (wechatUser.length > 0) {
-					WechatUser.update({name: data.openid}, {$set:{sessionKey:data.session_key}});
+					WechatUser.update({name: data.openid}, {sessionKey:data.session_key}, (err) => {
+						if (err) {
+							console.log(err)
+						}
+						res.json({
+							success: 1,
+							data: {
+								sessionID: data.session_key,
+								openId: data.openid
+							}
+						})
+					});
 					// wechatUser.sessionKey = data.session_key;
 					// wechatUser.save((err, wechatUser) => {
 					// 	console.log(err);
 					// });
-					res.json({
-						success: 1,
-						data: {
-							sessionID: data.session_key,
-							openId: data.openid
-						}
-					})
 				} else {
 					let wechatUserObj = {
 						username: data.openid,
