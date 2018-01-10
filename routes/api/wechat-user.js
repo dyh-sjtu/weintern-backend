@@ -81,7 +81,7 @@ router.get('/wx/isFavorite', Auth.requiredOpenid, (req, res) => {
 	
 	WechatUser.findById(openid, (err, user) => {
 		if (err) {
-			cosnole.log(err)
+			console.log(err)
 		}
 		if (user.likes.indexOf(favoriteId) > -1) {
 			return res.json({
