@@ -18,17 +18,13 @@ router.get('/favorite/save', Auth.requiredOpenid, (req, res) => {
 					})
 				}
 				if (!user.likes) {
-					// user.likes = [];
-					// user.likes.push(favoriteId);
 					// 添加岗位下的收藏者
 					Job.find({_id: favoriteId})
 						.exec((err, job) => {
 							if (err) {
 								console.log(err);
 							}
-							job.beCollected = [];
-							job.beCollected.push(user._id);
-							job.save((err, job) => {
+							Job.update({_id: favoriteId}, {beCollected: [user._id]}, (err, job) => {
 								if (err) {
 									console.log(err);
 								}
