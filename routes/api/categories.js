@@ -65,15 +65,10 @@ router.get('/jobs', (req, res) => {
 
 // 根据jobID查找岗位详情
 router.get('/job', (req, res) => {
-	let start = parseInt(req.query.start);
-	let count = parseInt(req.query.count);
 	let jobId = req.query.jobId;
 	Job.find({_id: jobId})
 		.populate('worksite', 'addr')
 		.populate('category', 'name')
-		.sort({'meta.updateAt': -1})  // 职位类别下的职位也是按更新时间降序排序
-		.skip(start)
-		.limit(count)
 		.exec((err, job) => {
 			if (err) {
 				res.json({
@@ -89,13 +84,17 @@ router.get('/job', (req, res) => {
 })
 
 
-// 根据类别ID查找该类别下的
+// 根据类别ID查找该类别下的所有职位
 router.get('/job/category', (req, res) => {
+	let start = parseInt(req.query.start);
+	let count = parseInt(req.query.count);
 	let categoryId = req.query.categoryId;
 	Job.find({category: categoryId})
 		.populate('worksite', 'addr')
 		.populate('category', 'name')
-		.sort({"meta.updateAt": -1}) // 按照岗位的更新时间降序排序
+		.sort({"meta.updateAt": -1})  	// 按照岗位的更新时间降序排序
+		.skip(start)
+		.limit(count)
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
