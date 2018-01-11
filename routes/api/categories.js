@@ -65,10 +65,15 @@ router.get('/jobs', (req, res) => {
 
 // 根据jobID查找岗位详情
 router.get('/job', (req, res) => {
+	let start = parseInt(req.query.start);
+	let count = parseInt(req.query.count);
 	let jobId = req.query.jobId;
 	Job.find({_id: jobId})
 		.populate('worksite', 'addr')
 		.populate('category', 'name')
+		.sort({'meta.updateAt': -1})  // 职位类别下的职位也是按更新时间降序排序
+		.skip(start)
+		.limit(count)
 		.exec((err, job) => {
 			if (err) {
 				res.json({
