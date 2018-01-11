@@ -25,11 +25,11 @@ block content
 								td(style="vertical-align: middle;") #{item.tel}
 								td(style="vertical-align: middle;") #{item.avatarUrl}
 								td(style="vertical-align: middle;") #{item.country}, #{item.province}, #{item.city}
-								if #{item.gender} === 0
+								if item.gender === 0
 									td(style="vertical-align: middle;") 未知
-								if #{item.gender} === 1
+								if item.gender === 1
 									td(style="vertical-align: middle;") 男
-								if #{item.gender} === 2
+								if item.gender === 2
 									td(style="vertical-align: middle;") 女
 								td(style="vertical-align: middle;") #{item.likes.length}
 								td(style="vertical-align: middle;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
