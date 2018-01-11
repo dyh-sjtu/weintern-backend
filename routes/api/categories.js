@@ -40,10 +40,8 @@ router.get('/job/categories', (req, res) => {
 
 // 首页查询所有岗位
 router.get('/jobs', (req, res) => {
-	console.log('1');
-	let start = req.query.start;
-	let count = req.query.count;
-	console.log(start + count);
+	let start = parseInt(req.query.start);
+	let count = parseInt(req.query.count);
 	Job.find({})
 		.populate('worksite', "addr")
 		.populate('category', 'name')
