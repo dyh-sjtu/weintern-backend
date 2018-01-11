@@ -27,11 +27,11 @@ block content
 									a(href="#{item.avatarUrl}") 点击查看
 								td(style="vertical-align: middle;")
 									if item.country
-										span #{item.country},
+										span #{item.country}
 									if item.province
-										span #{item.province},
+										span , #{item.province}
 									if item.city
-										span #{item.city}
+										span , #{item.city}
 								if item.gender === 0
 									td(style="vertical-align: middle;") 未知
 								if item.gender === 1
