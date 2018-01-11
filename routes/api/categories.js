@@ -40,10 +40,16 @@ router.get('/job/categories', (req, res) => {
 
 // 首页查询所有岗位
 router.get('/jobs', (req, res) => {
+	console.log('1');
+	let start = req.query.start;
+	let count = req.query.count;
+	console.log(start + count);
 	Job.find({})
 		.populate('worksite', "addr")
 		.populate('category', 'name')
 		.sort({"meta.updateAt": -1})  // 按照岗位的更新时间降序排序
+		.skip(start)
+		.limit(count)
 		.exec((err, jobs) => {
 			if (err) {
 				return res.json({
@@ -51,6 +57,7 @@ router.get('/jobs', (req, res) => {
 					data: {}
 				})
 			}
+			console.log(jobs.length);
 			return res.json({
 				success: 1,
 				data: jobs
