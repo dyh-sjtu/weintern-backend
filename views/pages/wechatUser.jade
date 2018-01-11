@@ -14,7 +14,7 @@ block content
 							th 头像
 							th 性别
 							th 地址
-							th 职位收藏
+							th 职位收藏数
 							th 注册时间
 					tbody
 						each item,index in wechatUsers
@@ -23,8 +23,15 @@ block content
 								td(style="vertical-align: middle;") #{item.username}
 								td(style="vertical-align: middle;") #{item.nickName}
 								td(style="vertical-align: middle;") #{item.tel}
-								td(style="vertical-align: middle;") #{item.avatarUrl}
-								td(style="vertical-align: middle;") #{item.country}, #{item.province}, #{item.city}
+								td(style="vertical-align: middle;")
+									a(href="#{item.avatarUrl}") 点击查看
+								td(style="vertical-align: middle;")
+									if item.country
+										span #{item.country},
+									if item.province
+										span #{item.province},
+									if item.city
+										span #{item.city}
 								if item.gender === 0
 									td(style="vertical-align: middle;") 未知
 								if item.gender === 1
