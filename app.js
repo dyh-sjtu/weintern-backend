@@ -41,6 +41,8 @@ let user = require('./routes/user/user');
 // 用户中心
 let userCenter = require('./routes/user/userCenter');
 let userList = require('./routes/user/userList');
+// 微信小程序用户中心
+let wechatUserList = require('./routes/user/wechat-user');
 
 // 错误页面
 let status = require('./routes/status/status');
@@ -132,6 +134,7 @@ app.use('/', categoryMange);
 app.use('/api', wxJob);
 app.use('/api', login);
 app.use('/api', wechatUser);
+app.use('/', wechatUserList);
 
 
 // status:success || fail 错误提示路由

@@ -1,0 +1,35 @@
+extends ../layout
+
+block content
+	.container
+		.row
+			.col-md-12
+				table.table.table-hover.table-bordered
+					thead
+						tr
+							th 序号
+							th 用户Id
+							th 昵称
+							th 手机号
+							th 头像
+							th 性别
+							th 地址
+							th 职位收藏
+							th 注册时间
+					tbody
+						each item,index in wechatUsers
+							tr(class="item-id-#{item._id}")
+								td(style="vertical-align: middle;") #{index + 1}
+								td(style="vertical-align: middle;") #{item.username}
+								td(style="vertical-align: middle;") #{item.nickName}
+								td(style="vertical-align: middle;") #{item.tel}
+								td(style="vertical-align: middle;") #{item.avatarUrl}
+								td(style="vertical-align: middle;") #{item.country}, #{item.province}, #{item.city}
+								if #{item.gender} === 0
+									td(style="vertical-align: middle;") 未知
+								if #{item.gender} === 1
+									td(style="vertical-align: middle;") 男
+								if #{item.gender} === 2
+									td(style="vertical-align: middle;") 女
+								td(style="vertical-align: middle;") #{item.likes.length}
+								td(style="vertical-align: middle;") #{moment(item.meta.createAt).format("MM/DD/YYYY")}
